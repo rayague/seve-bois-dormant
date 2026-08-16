@@ -1,0 +1,16 @@
+# dépendances
+node_modules/
+
+# sortie de build — se régénère avec `npm run build`
+dist/
+.vite/
+
+# environnement
+*.local
+.env
+.env.*
+
+# système
+.DS_Store
+Thumbs.db
+desktop.ini

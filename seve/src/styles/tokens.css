@@ -1,0 +1,165 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   SÈVE — Bois Dormant
+   TOKENS — source de vérité unique.
+
+   Aucune valeur hexadécimale ni espacement en dur ailleurs dans le projet.
+   Exception unique et assumée : src/signature.js, module autonome par
+   conception (§4.1 du brief : « ne lit aucun token »). main.js lui passe
+   ces valeurs à l'exécution via getComputedStyle — les deux règles tiennent
+   ensemble sans que le module perde son indépendance.
+
+   Tous les ratios de contraste notés ici sont calculés (WCAG 2.1, sRGB),
+   pas estimés. Ils sont à re-vérifier si une valeur bouge.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root{
+
+  /* ───────────────────────────────────────────────────────── couleur : fonds
+     La page s'assombrit du haut vers le bas. Ces trois valeurs sont l'ossature
+     du concept ; tout le reste s'y adapte, jamais l'inverse.                  */
+
+  --craie:  #E9E4D8;   /* fond du haut de page · texte sur écorce             */
+  --limon:  #A8A091;   /* FOND PRINCIPAL — grège mi-ton, lin brut             */
+  --ecorce: #221D17;   /* texte principal, puis fond du bas de page           */
+
+
+  /* ─────────────────────────────────────────── pyramide : les trois paliers
+     Le fond glisse en continu entre ces arrêts (courbe eased, pas de palier
+     net). Chaque arrêt est un plateau de lecture dont le contraste est vérifié.
+
+       TÊTE   L=0,3551   corps --ecorce   6,45:1
+       CŒUR   L=0,2559   corps --ecorce   4,87:1
+       FOND   L=0,0128   corps --craie   13,18:1
+
+     --fond-coeur vaut --limon assombri de 14 %, PAS de 18 % comme écrit au
+     brief : à 18 % le corps de texte tombe à 4,45:1 et rate la cible. 16 %
+     est le maximum absolu (4,64:1) ; 14 % laisse de la marge pour la courbe. */
+
+  --fond-tete:  var(--limon);
+  --fond-coeur: #908A7D;
+  --fond-bas:   var(--ecorce);
+
+  /* Seuils de luminance relative du fond — pilotent la bascule du texte en S3.
+     Entre 0,1339 et 0,2326 AUCUNE couleur de texte de la palette n'atteint
+     4,5:1 : c'est la bande morte. Le fond doit la traverser pendant qu'aucun
+     bloc n'est en zone de lecture. Elle occupe 74 % de la descente CŒUR→FOND,
+     donc la traversée est rapide et le texte de FOND ne se révèle qu'après. */
+
+  --seuil-texte-sombre: 0.2326;  /* --ecorce lisible tant que L(fond) ≥ ceci  */
+  --seuil-texte-clair:  0.1339;  /* --craie  lisible dès que  L(fond) ≤ ceci  */
+  --seuil-matiere-fond: 0.0421;  /* --resine-txt lisible dès que L(fond) ≤ ceci
+                                    — le plus exigeant des cinq, il commande
+                                    le déclenchement de la révélation de FOND */
+
+  --seuil-matiere-tete: 0.3251;  /* --seve-txt n'est lisible QU'AU-DESSUS de
+                                    ceci, c'est-à-dire sur --limon pur et rien
+                                    d'autre : sur --fond-coeur il tombe à
+                                    3,67:1. En dessous, les matières prennent
+                                    --matiere-coeur. C'est la version continue
+                                    de la règle « aucun vert ne tient sur le
+                                    palier du milieu ».                       */
+
+  --seuil-bascule-corps: 0.1780; /* dans la bande morte aucune couleur ne passe.
+                                    Ce point est celui où --ecorce et --craie
+                                    sont à égalité (≈ 3,63:1 chacune) : on
+                                    bascule là, donc toujours sur la moins
+                                    mauvaise des deux.                        */
+
+
+  /* ──────────────────────────────────────── accents VISUELS — jamais du texte
+     Ces deux-là portent l'identité. Ils ne passent pas 4,5:1 et n'ont pas à le
+     faire : ils ne sont jamais employés en corps de texte.                    */
+
+  --seve:   #33503F;   /* gauge, filets, traits — non-texte, seuil 3:1        */
+  --resine: #B4622B;   /* prix en display (3,76:1, AA-large ✓), états hover   */
+
+
+  /* ─────────────────────────────────────── dérivés LISIBLES — texte seulement
+     Même identité, luminance corrigée. Chacun a un domaine d'emploi strict :
+     hors de ce domaine, il retombe sous 4,5:1.                                */
+
+  --seve-txt:   #22382B;   /* matières sur --limon UNIQUEMENT      4,86:1 ✓
+                              sur --fond-coeur il tombe à 3,35:1 — voir
+                              --matiere-coeur ci-dessous                      */
+  --resine-txt: #E09055;   /* matières sur --ecorce                6,60:1 ✓
+                              exige L(fond) ≤ 0,0421 pour rester valide       */
+  --resine-btn: #8A4A1F;   /* fond du bouton d'achat, label --craie 5,37:1 ✓
+                              le label fait 11 px : aucune tolérance possible */
+
+  /* Matières du bloc CŒUR. Aucun vert n'atteint 4,5:1 sur --fond-coeur sans
+     devenir indistinguable de --ecorce (le maximum théorique sur ce fond est
+     6,12:1, atteint par du noir pur ; un --seve assombri à 50 % plafonne à
+     4,47:1). L'accent coloré n'y est donc pas tenable — on le remplace par
+     --ecorce, distingué typographiquement. Voir la note remise avec S1.      */
+
+  --matiere-coeur: var(--ecorce);   /* 4,87:1 ✓ — en attente d'arbitrage      */
+
+  /* Repli demandé si --resine-txt tire trop vers l'orange à l'écran :
+     remplacer --resine-txt par var(--craie) → 13,18:1. On perd l'accent,
+     on garde l'identité.                                                     */
+
+
+  /* ─────────────────────────────────── espacement — anneaux de croissance   */
+
+  --s1:  8px;
+  --s2:  16px;
+  --s3:  24px;    /* marges mobiles                                          */
+  --s4:  40px;    /* retrait de la gauge desktop                             */
+  --s5:  64px;
+  --s6:  104px;
+  --s7:  168px;
+
+
+  /* ────────────────────────────────────────────────────────────── mesures   */
+
+  --colonne: 62ch;    /* longueur de ligne maximale, toutes sections          */
+  --contenu: 1140px;  /* largeur maximale du contenu                          */
+  --filet:   1px;     /* gauge desktop, filets d'annotation                   */
+  --filet-m: 2px;     /* barre de progression mobile                          */
+  --rayon:   2px;     /* border-radius maximal autorisé. Jamais au-delà.      */
+  --focus-offset: 3px;/* décalage du contour de focus                         */
+
+
+  /* ──────────────────────────────────────────────────────── durées & easings */
+
+  --t-court: .28s;
+  --t-moyen: .6s;
+  --t-long:  .9s;
+
+  --e-sortie:  cubic-bezier(.16, 1, .3, 1);      /* équivalent CSS d'expo.out */
+  --e-retour:  cubic-bezier(.25, .46, .45, .94); /* équivalent de power2.out  */
+
+
+  /* ─────────────────────────────────────────────────────────── typographie
+     Deux familles, pas trois. L'inversion est délibérée : le sérif est la
+     matière lisible, le display est un grotesque massif.
+
+     Les woff2 sont auto-hébergés dans public/fonts/ et déclarés dans
+     base.css. Sous-ensemble sur les glyphes réellement composés : 56,4 Ko
+     au total, contre 114,8 pour le sous-ensemble latin complet.
+     Les piles ci-dessous ne servent plus que de repli au premier rendu.    */
+
+  --f-display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --f-corps:   'Newsreader', Georgia, 'Times New Roman', serif;
+
+  --p-display: 700;
+  --p-h3:      500;
+  --p-corps:   300;
+  --p-label:   500;
+
+  --ts-display: clamp(2.8rem, 13vw, 7rem);
+  --ts-h2:      clamp(1.6rem, 5vw, 2.6rem);
+  --ts-h3:      1.05rem;
+  --ts-corps:   clamp(.95rem, 2.2vw, 1.05rem);
+  --ts-label:   11px;
+
+  --lh-display: .88;
+  --lh-h2:      1.02;
+  --lh-corps:   1.8;
+  --lh-label:   1.4;
+
+  --ls-display: -.03em;
+  --ls-h2:      -.02em;
+  --ls-h3:      .04em;
+  --ls-label:   .24em;
+}

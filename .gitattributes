@@ -1,0 +1,8 @@
+# Normalise les fins de ligne dans le dépôt, quel que soit le poste.
+* text=auto eol=lf
+
+# Binaires : jamais de conversion.
+*.woff2 binary
+*.woff  binary
+*.png   binary
+*.jpg   binary

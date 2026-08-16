@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>SÈVE — Bois Dormant, eau de parfum boisée</title>
+<meta name="description" content="Bois Dormant, eau de parfum boisée unisexe. Vétiver de Haïti, iris pallida, cèdre de l'Atlas. 100 ml, 185 €. SÈVE, parfumerie de niche à Grasse — une création par an.">
+
+<link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-700.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/newsreader-300.woff2" crossorigin>
+
+<link rel="stylesheet" href="/src/styles/tokens.css">
+<link rel="stylesheet" href="/src/styles/base.css">
+<link rel="stylesheet" href="/src/styles/sections.css">
+</head>
+
+<body>
+
+<!-- ══ RAIL DE PROGRESSION ══════════════════════════════════════════════════
+     Statique en S2 : la piste et les trois marques existent, le remplissage
+     est piloté au scroll en S3. Décoratif — la pyramide olfactive est déjà
+     ordonnée dans le document, le rail ne fait que la redire visuellement. -->
+<div class="rail" aria-hidden="true">
+  <span class="rail__piste"></span>
+  <span class="rail__remplissage"></span>
+  <span class="rail__marque rail__marque--tete">Tête</span>
+  <span class="rail__marque rail__marque--coeur">Cœur</span>
+  <span class="rail__marque rail__marque--fond">Fond</span>
+</div>
+
+
+<main>
+
+  <!-- ══ 01 · HERO ═════════════════════════════════════════════════════════
+       Pas de bouton, pas de menu. Le premier scroll est le seul appel. -->
+  <section class="hero" id="hero" data-ambiance="clair">
+    <div class="hero__texte" data-flou>
+      <p class="label">SÈVE — Grasse</p>
+      <h1 class="display">
+        <span class="ligne"><span class="ligne__texte">Bois</span></span>
+        <span class="ligne"><span class="ligne__texte">Dormant</span></span>
+      </h1>
+      <p class="hero__sous">Eau de parfum boisée. Une création par an.</p>
+    </div>
+
+    <div class="hero__flacon">
+      <svg class="flacon" viewBox="0 0 320 460" aria-hidden="true" focusable="false">
+        <defs>
+          <clipPath id="fl-hero-corps">
+            <path d="M60,208 C60,180 84,160 128,152 L128,120 L192,120 L192,152
+                     C236,160 260,180 260,208 L260,432 C260,437 256,441 251,441
+                     L69,441 C64,441 60,437 60,432 Z"/>
+          </clipPath>
+        </defs>
+
+        <g class="fl-bouchon" data-flacon="bouchon">
+          <path class="fl-bouchon__bloc" d="M114,18 L206,18 L202,120 L118,120 Z"/>
+          <path class="fl-bouchon__grain"
+                d="M124,38 L196,38 M122,58 L198,58 M120,80 L200,80 M119,101 L201,101"/>
+        </g>
+
+        <path class="fl-verre" data-flacon="verre"
+              d="M60,208 C60,180 84,160 128,152 L128,120 L192,120 L192,152
+                 C236,160 260,180 260,208 L260,432 C260,437 256,441 251,441
+                 L69,441 C64,441 60,437 60,432 Z"/>
+
+        <g clip-path="url(#fl-hero-corps)" data-flacon="contenu">
+          <rect class="fl-jus"     x="52" y="250" width="216" height="200"/>
+          <rect class="fl-surface" x="52" y="250" width="216" height="2"/>
+          <rect class="fl-reflet"  x="82" y="180" width="14" height="236" data-flacon="reflet-large"/>
+          <rect class="fl-reflet fl-reflet--fin" x="236" y="206" width="6" height="190" data-flacon="reflet-fin"/>
+        </g>
+
+        <path class="fl-arete"
+              d="M60,208 C60,180 84,160 128,152 L128,120 L192,120 L192,152
+                 C236,160 260,180 260,208 L260,432 C260,437 256,441 251,441
+                 L69,441 C64,441 60,437 60,432 Z"/>
+        <path class="fl-col" d="M128,152 L192,152"/>
+      </svg>
+    </div>
+  </section>
+
+
+  <!-- ══ 02 · LE FLACON ════════════════════════════════════════════════════ -->
+  <section class="objet" id="objet" data-ambiance="clair">
+    <div class="objet__intro" data-flou>
+      <p class="label">02 — L'objet</p>
+      <h2 class="h2">Coulé, pas moulé</h2>
+      <p class="corps">
+        Le verre est coulé à la main : l'épaisseur varie d'un flacon à
+        l'autre. Le bouchon est taillé dans un cèdre massif, sans
+        vernis — il prend l'odeur du parfum au fil des mois.
+      </p>
+    </div>
+
+    <figure class="objet__scene">
+      <svg class="flacon flacon--grand" viewBox="0 0 320 460" aria-hidden="true" focusable="false">
+        <defs>
+          <clipPath id="fl-grand-corps">
+            <path d="M60,208 C60,180 84,160 128,152 L128,120 L192,120 L192,152
+                     C236,160 260,180 260,208 L260,432 C260,437 256,441 251,441
+                     L69,441 C64,441 60,437 60,432 Z"/>
+          </clipPath>
+        </defs>
+
+        <g class="fl-bouchon" data-flacon="bouchon">
+          <path class="fl-bouchon__bloc" d="M114,18 L206,18 L202,120 L118,120 Z"/>
+          <path class="fl-bouchon__grain"
+                d="M124,38 L196,38 M122,58 L198,58 M120,80 L200,80 M119,101 L201,101"/>
+        </g>
+
+        <path class="fl-verre" data-flacon="verre"
+              d="M60,208 C60,180 84,160 128,152 L128,120 L192,120 L192,152
+                 C236,160 260,180 260,208 L260,432 C260,437 256,441 251,441
+                 L69,441 C64,441 60,437 60,432 Z"/>
+
+        <g clip-path="url(#fl-grand-corps)" data-flacon="contenu">
+          <rect class="fl-jus"     x="52" y="250" width="216" height="200"/>
+          <rect class="fl-surface" x="52" y="250" width="216" height="2"/>
+          <rect class="fl-reflet"  x="82" y="180" width="14" height="236" data-flacon="reflet-large"/>
+          <rect class="fl-reflet fl-reflet--fin" x="236" y="206" width="6" height="190" data-flacon="reflet-fin"/>
+          <rect class="fl-etiquette" x="106" y="300" width="108" height="68"/>
+        </g>
+
+        <path class="fl-arete"
+              d="M60,208 C60,180 84,160 128,152 L128,120 L192,120 L192,152
+                 C236,160 260,180 260,208 L260,432 C260,437 256,441 251,441
+                 L69,441 C64,441 60,437 60,432 Z"/>
+        <path class="fl-col" d="M128,152 L192,152"/>
+      </svg>
+
+      <figcaption class="annots">
+        <span class="annot annot--verre">Verre coulé à la main</span>
+        <span class="annot annot--bouchon">Bouchon en cèdre massif</span>
+        <span class="annot annot--format">100 ml — 185 €</span>
+      </figcaption>
+    </figure>
+  </section>
+
+
+  <!-- ══ 03 · LA PYRAMIDE ══════════════════════════════════════════════════
+       Trois blocs pleine hauteur. En S2 chaque palier porte son fond fixe ;
+       l'interpolation continue arrive en S3. Les couleurs de texte sont
+       déjà celles des paliers, pour que le contraste se vérifie ici. -->
+  <section class="pyramide" id="pyramide" data-ambiance="dynamique">
+
+    <!-- Fond interpolé en continu. Il ne sert qu'au JS : sans lui, ce sont
+         les dégradés CSS des paliers qui tiennent la page. -->
+    <div class="pyramide__fond" aria-hidden="true"></div>
+
+    <article class="palier palier--tete">
+      <div class="palier__cadre" data-flou>
+        <p class="label">03 — La pyramide</p>
+        <h2 class="h2">Trois temps</h2>
+        <h3 class="h3">Tête</h3>
+        <p class="matieres">
+          <span class="matiere">Bergamote de Calabre</span>
+          <span class="matiere">Poivre rose</span>
+        </p>
+        <p class="corps">
+          Ça ouvre sec. La bergamote griffe, le poivre rose répond dans
+          la seconde. Dix minutes, pas plus : le reste attend dessous.
+        </p>
+      </div>
+    </article>
+
+    <article class="palier palier--coeur">
+      <div class="palier__cadre" data-flou>
+        <h3 class="h3">Cœur</h3>
+        <p class="matieres">
+          <span class="matiere">Iris pallida</span>
+          <span class="matiere">Cèdre de l'Atlas</span>
+        </p>
+        <p class="corps">
+          L'iris pallida arrive poudré, presque froid. C'est une racine,
+          pas une fleur, et il lui faut six ans pour sentir : trois de
+          culture, trois de séchage. Le cèdre de l'Atlas le tient par en
+          dessous, droit et sec. Ici le parfum cesse de bouger.
+        </p>
+      </div>
+    </article>
+
+    <article class="palier palier--fond">
+      <div class="palier__cadre" data-flou>
+        <h3 class="h3">Fond</h3>
+        <p class="matieres">
+          <span class="matiere">Vétiver de Haïti</span>
+          <span class="matiere">Santal</span>
+          <span class="matiere">Musc blanc</span>
+        </p>
+        <p class="corps">
+          Le vétiver d'Haïti ne sent pas le bois : il sent la terre
+          après la pluie, la racine humide, la fumée froide. Le santal
+          l'adoucit sans l'éteindre. Le musc blanc, lui, ne se sent pas
+          — il tient les autres ensemble et les fait durer la journée. À
+          ce stade le parfum a quitté la peau pour passer dessous. On
+          cesse de le percevoir soi-même ; les autres le remarquent.
+        </p>
+      </div>
+    </article>
+
+  </section>
+
+
+  <!-- ══ 04 · L'ATELIER ════════════════════════════════════════════════════
+       Section volontairement nue. Un seul fade-up en S3, rien d'autre. -->
+  <!-- Pas de data-flou ici, et c'est délibéré : la section reste nue. -->
+  <section class="atelier" id="atelier" data-ambiance="sombre">
+    <p class="label">04 — L'atelier</p>
+    <h2 class="h2">Dix-huit mois sous terre</h2>
+
+    <p class="corps">
+      Le vétiver ne se cueille pas, il se déterre. Dans le sud
+      d'Haïti, autour des Cayes, les racines poussent dix-huit mois
+      avant d'atteindre la densité qu'on cherche. On les arrache à
+      la main, on les lave, on les sèche au soleil. Puis elles
+      passent à la vapeur pendant vingt heures, là où une fleur en
+      demande deux. Cent kilos de racines donnent moins d'un litre.
+    </p>
+
+    <p class="corps">
+      L'essence arrive à Grasse en fûts, et elle attend. Un vétiver
+      frais tire sur le vert, presque sur le pamplemousse brûlé ; il
+      lui faut des mois au calme pour s'arrondir. La composition
+      macère ensuite huit semaines avant d'être filtrée à froid. Le
+      vétiver demande trois ans, l'iris en demande six. C'est
+      pourquoi il n'y a qu'un <em>Bois Dormant</em> par an, et pas deux.
+    </p>
+  </section>
+
+
+  <!-- ══ 05 · ACHAT ════════════════════════════════════════════════════════ -->
+  <section class="achat" id="achat" data-ambiance="sombre" data-flou>
+    <p class="label">05 — Acheter</p>
+    <h2 class="h2">Bois Dormant — 100 ml</h2>
+
+    <p class="prix">185 €</p>
+
+    <button class="bouton" type="button">Ajouter au panier</button>
+
+    <ul class="mentions">
+      <li>Livraison offerte en France — 2 à 4 jours</li>
+      <li>Retour sous 30 jours, flacon ouvert accepté</li>
+      <li>Écrire à <a href="mailto:bonjour@seve-grasse.fr">bonjour@seve-grasse.fr</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<script type="module" src="/src/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,534 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   SÈVE — sections
+   Mobile 390 px d'abord, puis 768 px, puis 1140 px.
+   Aucune animation, aucune transition : S2 est statique.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ══ RAIL DE PROGRESSION ═══════════════════════════════════════════════════
+   Mobile : barre horizontale de 2 px collée en haut.
+   Desktop : gauge verticale de 1 px à --s4 du bord gauche, trois marques.
+   Le remplissage est à 0 en S2 ; il se pilote au scroll en S3.            */
+
+.rail{
+  position:fixed;
+  inset:0 0 auto 0;
+  height:var(--filet-m);
+  z-index:10;
+  pointer-events:none;
+}
+
+.rail__piste,
+.rail__remplissage{
+  position:absolute;
+  inset:0 0 auto 0;
+  height:var(--filet-m);
+}
+
+.rail__piste      { background:var(--seve); opacity:.28; }
+.rail__remplissage{ background:var(--seve); width:0; }
+
+.rail__marque{ display:none; }
+
+
+/* ══ 01 · HERO ═════════════════════════════════════════════════════════════ */
+
+.hero{
+  min-height:100svh;
+  background:var(--craie);
+  padding:var(--s6) var(--s3) var(--s5);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:var(--s5);
+}
+
+.hero__texte{
+  display:flex;
+  flex-direction:column;
+  gap:var(--s2);
+}
+
+.hero .display{ margin-block:var(--s1); }
+
+.hero__sous{
+  font-family:var(--f-corps);
+  font-style:italic;
+  font-weight:var(--p-corps);
+  font-size:var(--ts-corps);
+  line-height:var(--lh-corps);
+  max-width:var(--colonne);
+}
+
+.hero__flacon{
+  display:flex;
+  justify-content:center;
+}
+
+.hero .flacon{ width:min(52vw, 210px); }
+
+
+/* ══ 02 · LE FLACON ════════════════════════════════════════════════════════
+   Le fond glisse de --craie vers --limon : la page commence à s'assombrir. */
+
+.objet{
+  background:linear-gradient(180deg, var(--craie) 0%, var(--limon) 100%);
+  padding:var(--s6) var(--s3);
+  display:flex;
+  flex-direction:column;
+  gap:var(--s5);
+}
+
+.objet__intro{
+  display:flex;
+  flex-direction:column;
+  gap:var(--s2);
+}
+
+.objet__scene{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:var(--s4);
+}
+
+.objet .flacon{ width:min(64vw, 260px); }
+
+/* Annotations — filet de 1 px en --seve, puis le texte.
+   Sur mobile elles s'empilent sous le flacon ; le filet est horizontal et
+   court, il indique la parenté sans prétendre pointer une zone précise.  */
+
+.annots{
+  display:flex;
+  flex-direction:column;
+  gap:var(--s2);
+  width:100%;
+  max-width:var(--colonne);
+}
+
+.annot{
+  font-family:var(--f-display);
+  font-weight:var(--p-label);
+  font-size:var(--ts-label);
+  line-height:var(--lh-label);
+  letter-spacing:var(--ls-label);
+  text-transform:uppercase;
+  display:flex;
+  align-items:center;
+  gap:var(--s2);
+}
+
+.annot::before{
+  content:'';
+  flex:0 0 var(--s4);
+  height:var(--filet);
+  background:var(--seve);
+}
+
+
+/* ══ LE FLACON — pièces du SVG ═════════════════════════════════════════════
+   Aucune photographie : verre, jus, bouchon et reflets sont dessinés.
+   Les groupes portent des data-flacon pour que S3 puisse animer les masques
+   de lumière sans toucher à la géométrie.                                  */
+
+.flacon{ height:auto; }
+
+.fl-verre        { fill:var(--limon); opacity:.30; }
+.fl-arete        { fill:none; stroke:var(--ecorce); stroke-width:1.5; opacity:.62; }
+.fl-col          { fill:none; stroke:var(--ecorce); stroke-width:1; opacity:.34; }
+
+.fl-jus          { fill:var(--seve); opacity:.52; }
+.fl-surface      { fill:var(--seve); opacity:.86; }
+
+.fl-reflet       { fill:var(--craie); opacity:.58; }
+.fl-reflet--fin  { opacity:.34; }
+
+.fl-bouchon__bloc { fill:var(--ecorce); }
+.fl-bouchon__grain{ fill:none; stroke:var(--limon); stroke-width:1; opacity:.34; }
+
+.fl-etiquette    { fill:none; stroke:var(--ecorce); stroke-width:1; opacity:.26; }
+
+
+/* ══ 03 · LA PYRAMIDE ══════════════════════════════════════════════════════
+   Trois blocs pleine hauteur. Chaque palier porte son fond, et la descente
+   d'un palier au suivant se fait DANS le palier, sous le bloc de texte.
+
+   La traversée CŒUR → FOND franchit la bande morte (aucune couleur de la
+   palette n'y atteint 4,5:1). Elle est donc compressée dans le dernier
+   quart du bloc CŒUR, là où plus aucun texte n'est en zone de lecture.
+   C'est la même règle que suivra l'interpolation continue en S3.          */
+
+.palier{
+  min-height:100svh;
+  padding:var(--s6) var(--s3);
+  display:flex;
+  align-items:center;
+}
+
+.palier__cadre{
+  display:flex;
+  flex-direction:column;
+  gap:var(--s2);
+  width:100%;
+}
+
+.palier .h3{ margin-top:var(--s3); }
+
+.matieres{
+  display:flex;
+  flex-wrap:wrap;
+  gap:var(--s1) var(--s3);
+  margin-block:var(--s1);
+}
+
+/* Les noms de matières se distinguent par la typographie, pas seulement par
+   la couleur — c'est ce qui permet au palier CŒUR de rester lisible sans
+   accent coloré, et ce qui les tient cohérents sur les trois paliers.     */
+.matiere{
+  font-family:var(--f-display);
+  font-weight:var(--p-label);
+  font-size:var(--ts-label);
+  line-height:var(--lh-label);
+  letter-spacing:var(--ls-label);
+  text-transform:uppercase;
+}
+
+/* Chaque palier reste PLEIN sous son bloc de texte, et ne descend vers le
+   palier suivant que dans son dernier quart — sous la zone de lecture.
+   Sans cette règle, les noms de matières de TÊTE se retrouvent sur un fond
+   déjà assombri : mesuré à 4,19:1 avec un dégradé plein bloc, contre 4,86:1
+   sur --limon plein. --seve-txt n'a que 0,36 de marge, il ne supporte
+   aucune dérive du fond.                                                   */
+
+.palier--tete{
+  background:linear-gradient(180deg,
+    var(--fond-tete)  0%,
+    var(--fond-tete)  78%,
+    var(--fond-coeur) 100%);
+  color:var(--ecorce);
+}
+.palier--tete .matiere{ color:var(--seve-txt); }
+.palier--tete .palier__cadre{ margin-bottom:var(--s6); }
+
+/* 82 % et pas 74 % : la traversée de la bande morte doit être aussi courte
+   que possible, et le paragraphe du CŒUR sortait encore de la zone de
+   lecture pendant qu'elle avait lieu. Mesuré à 3,82:1 au plus bas avec 74 %.
+   Cette valeur est tenue identique dans pyramide.js.                      */
+.palier--coeur{
+  background:linear-gradient(180deg,
+    var(--fond-coeur) 0%,
+    var(--fond-coeur) 82%,
+    var(--fond-bas)  100%);
+  color:var(--ecorce);
+}
+.palier--coeur .matiere{ color:var(--matiere-coeur); }
+.palier--coeur .palier__cadre{ margin-bottom:var(--s7); }
+
+.palier--fond{
+  background:var(--fond-bas);
+  color:var(--craie);
+}
+.palier--fond .matiere{ color:var(--resine-txt); }
+
+
+/* ══ 04 · L'ATELIER ════════════════════════════════════════════════════════
+   Colonne unique centrée. Rien d'autre ne se passe ici, et c'est le sujet. */
+
+.atelier{
+  background:var(--ecorce);
+  color:var(--craie);
+  padding:var(--s7) var(--s3);
+  display:flex;
+  flex-direction:column;
+  gap:var(--s3);
+  align-items:flex-start;
+}
+
+.atelier .h2{ margin-bottom:var(--s3); }
+.atelier .corps + .corps{ margin-top:var(--s2); }
+
+
+/* ══ 05 · ACHAT ════════════════════════════════════════════════════════════ */
+
+.achat{
+  background:var(--ecorce);
+  color:var(--craie);
+  padding:var(--s6) var(--s3) var(--s7);
+  display:flex;
+  flex-direction:column;
+  gap:var(--s2);
+  align-items:flex-start;
+}
+
+.prix{
+  font-family:var(--f-display);
+  font-weight:var(--p-display);
+  font-size:var(--ts-display);
+  line-height:var(--lh-display);
+  letter-spacing:var(--ls-display);
+  color:var(--resine);
+  margin-block:var(--s2);
+}
+
+.bouton{
+  background:var(--resine-btn);
+  color:var(--craie);
+  font-family:var(--f-display);
+  font-weight:var(--p-label);
+  font-size:var(--ts-label);
+  line-height:var(--lh-label);
+  letter-spacing:var(--ls-label);
+  text-transform:uppercase;
+  padding:var(--s2) var(--s4);
+  border-radius:var(--rayon);
+  width:100%;
+  max-width:var(--colonne);
+}
+
+.mentions{
+  margin-top:var(--s3);
+  display:flex;
+  flex-direction:column;
+  gap:var(--s1);
+  font-family:var(--f-display);
+  font-weight:var(--p-label);
+  font-size:var(--ts-label);
+  line-height:var(--lh-label);
+  letter-spacing:var(--ls-label);
+  text-transform:uppercase;
+  opacity:.78;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   S3 — MÉCANISMES D'ANIMATION
+   Tout ce qui suit ne s'active qu'avec JavaScript. Sans lui, les dégradés
+   CSS des paliers et les couleurs statiques tiennent la page : c'est la
+   raison d'être du préfixe .js.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Fond de pyramide interpolé en continu. Le margin négatif le sort du flux :
+   il colle au viewport sans occuper de hauteur. */
+.pyramide{ position:relative; }
+
+.pyramide__fond{
+  position:sticky;
+  top:0;
+  height:100svh;
+  margin-bottom:-100svh;
+  z-index:0;
+  display:none;
+}
+.js .pyramide__fond{ display:block; }
+
+.palier{ position:relative; z-index:1; }
+
+/* Sous JS le fond des paliers passe la main au calque interpolé, et les
+   couleurs de texte viennent des seuils calculés dans pyramide.js. */
+.js .palier{ background:none; }
+
+.js .palier .label,
+.js .palier .h2,
+.js .palier .h3,
+.js .palier .corps{ color:var(--pyr-corps, currentColor); }
+.js .palier .matiere{ color:var(--pyr-matiere, currentColor); }
+
+/* Révélation mot à mot — jamais lettre par lettre. */
+.mot{ display:inline-block; }
+
+/* Aberration chromatique du hero. Le mode de fusion suit la valeur du
+   fond : multiply sur --craie. En screen, sur un fond quasi blanc, les
+   deux copies décalées sont écrasées vers le blanc et on ne voit rien. */
+.ligne{ display:block; position:relative; }
+
+.fantome{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  mix-blend-mode:multiply;
+}
+
+/* Rail — bascule d'ambiance. Aucune couleur unique ne tient sur les quatre
+   fonds traversés ; les marques suivent donc la section. */
+.rail__marque{ opacity:.55; }
+.rail__marque.est-active{ opacity:1; font-weight:var(--p-display); }
+
+.rail[data-ambiance="sombre"] .rail__piste,
+.rail[data-ambiance="sombre"] .rail__remplissage{ background:var(--craie); }
+.rail[data-ambiance="sombre"] .rail__marque{ color:var(--craie); }
+.rail[data-ambiance="sombre"] .rail__marque.est-active{ color:var(--resine-txt); }
+
+/* Bouton — décalage du fond de 2 px au survol. Rien de plus. À ce stade
+   de la page, on a assez animé. */
+.js .bouton{ background:none; }
+
+.bouton::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background:var(--resine-btn);
+  border-radius:var(--rayon);
+  transition:transform var(--t-court) var(--e-retour);
+}
+.bouton{ position:relative; isolation:isolate; }
+.bouton:hover::before{ transform:translateY(-2px); }
+
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   768 px — la page respire, le contenu se plafonne
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width:768px){
+
+  .hero,
+  .objet,
+  .atelier,
+  .achat{ padding-inline:var(--s5); }
+
+  .palier{ padding-inline:var(--s5); }
+
+  /* Le hero reste EMPILÉ jusqu'à 1140. Le mettre en ligne plus tôt ne marche
+     pas : à 768 le display vaut 13vw = 100 px, « DORMANT » mesure alors
+     506 px alors que la colonne de texte n'en offre que 291. Le flacon
+     partait 149 px hors écran. Voir le bloc 1140.                          */
+
+  /* Le flacon en grand, annotations posées autour et reliées par des filets */
+  .objet__scene{
+    position:relative;
+    align-self:center;
+    width:min(100%, 620px);
+  }
+
+  .objet .flacon{ width:min(38vw, 300px); margin-inline:auto; }
+
+  .annots{
+    position:absolute;
+    inset:0;
+    max-width:none;
+    display:block;
+  }
+
+  .annot{
+    position:absolute;
+    gap:var(--s1);
+  }
+
+  .annot::before{ flex-basis:var(--s5); }
+
+  .annot--bouchon{ top:6%;  left:0; }
+  .annot--verre  { top:46%; left:0; }
+
+  .annot--format{
+    top:76%;
+    right:0;
+    flex-direction:row-reverse;
+  }
+
+  .atelier,
+  .achat{ align-items:center; text-align:center; }
+
+  .atelier .corps{ text-align:left; }
+
+  .bouton{ width:auto; min-width:calc(var(--s7) + var(--s6)); }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   1140 px — rail vertical, contenu plafonné
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width:1140px){
+
+  .hero,
+  .objet,
+  .atelier,
+  .achat,
+  .palier__cadre{
+    max-width:var(--contenu);
+    margin-inline:auto;
+    width:100%;
+  }
+
+  .hero,
+  .objet,
+  .atelier,
+  .achat{ padding-inline:var(--s6); }
+
+  .palier{ padding-inline:var(--s6); }
+
+  /* Hero en ligne — le display est ici plafonné à 7rem (112 px), où
+     « DORMANT » mesure 568 px. Budget à 1140, cas le plus serré :
+     568 texte + 64 gouttière + 260 flacon + 208 marges = 1100. Il reste
+     40 px. Ne pas élargir le flacon ni la gouttière sans refaire ce calcul. */
+  .hero{
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between;
+    gap:var(--s5);
+  }
+
+  .hero__texte { flex:1 1 auto; min-width:0; }
+  .hero__flacon{ flex:0 0 auto; }
+  .hero .flacon{ width:min(24vw, 260px); }
+
+  /* La gauge remplace la barre horizontale */
+  .rail{
+    inset:0 auto 0 var(--s4);
+    width:auto;
+    height:100svh;
+    display:flex;
+    align-items:center;
+  }
+
+  .rail__piste,
+  .rail__remplissage{
+    inset:auto;
+    position:absolute;
+    left:0;
+    top:22%;
+    width:var(--filet);
+    height:56%;
+  }
+
+  .rail__piste      { background:var(--seve); opacity:.34; }
+  .rail__remplissage{ background:var(--seve); height:0; }
+
+  /* Les marques sont du TEXTE de 11 px : seuil 4,5:1, pas 3:1.
+     Le brief les demande en --seve, mais --seve n'y arrive sur aucun des
+     fonds traversés — 3,43:1 sur --limon, 2,59 sur --fond-coeur, 1,88 sur
+     --ecorce. Le rail étant en position fixed, il croise les quatre fonds,
+     et AUCUNE couleur unique ne tient : --ecorce passe sur les trois clairs
+     (13,18 / 6,45 / 4,87) et échoue sur le sombre ; --craie fait l'inverse.
+
+     S2 pose donc la moitié claire. La bascule vers --craie sur les sections
+     sombres est du S3 — même déclencheur que la bascule de la pyramide.
+     Idem pour la marque active : --resine plafonne à 3,76:1 sur --ecorce et
+     ne dépasse pas 1,72 sur --limon. Elle demandera son propre dérivé.     */
+  .rail__marque{
+    display:block;
+    position:absolute;
+    left:var(--s2);
+    font-family:var(--f-display);
+    font-weight:var(--p-label);
+    font-size:var(--ts-label);
+    line-height:var(--lh-label);
+    letter-spacing:var(--ls-label);
+    text-transform:uppercase;
+    color:var(--ecorce);
+    white-space:nowrap;
+  }
+
+  .rail__marque--tete { top:22%; }
+  .rail__marque--coeur{ top:50%; }
+  .rail__marque--fond { top:78%; }
+}

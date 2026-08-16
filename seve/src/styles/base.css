@@ -1,0 +1,170 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   SÈVE — base
+   Polices, remise à zéro, échelle typographique, accessibilité.
+   Aucune valeur hexadécimale, aucun espacement en dur : tout vient de
+   tokens.css. Aucune animation dans ce fichier — S2 est statique.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ─────────────────────────────────────────────────────────────── polices
+   Auto-hébergées, woff2, sous-ensemble sur les glyphes réellement composés.
+   56,4 Ko au total. Le sous-ensemble latin complet en pesait 114,8.
+   Archivo porte tout ce qui est en capitales : display, h2, h3, labels,
+   noms de matières, annotations, bouton, mentions.
+   Newsreader ne porte que le corps de texte ; son italique ne compose que
+   le sous-titre du hero et « Bois Dormant » dans l'atelier — son jeu de
+   glyphes est réduit d'autant.                                             */
+
+@font-face{
+  font-family:'Archivo';
+  font-style:normal;
+  font-weight:500;
+  font-display:swap;
+  src:url('/fonts/archivo-500.woff2') format('woff2');
+}
+@font-face{
+  font-family:'Archivo';
+  font-style:normal;
+  font-weight:700;
+  font-display:swap;
+  src:url('/fonts/archivo-700.woff2') format('woff2');
+}
+@font-face{
+  font-family:'Newsreader';
+  font-style:normal;
+  font-weight:300;
+  font-display:swap;
+  src:url('/fonts/newsreader-300.woff2') format('woff2');
+}
+@font-face{
+  font-family:'Newsreader';
+  font-style:italic;
+  font-weight:300;
+  font-display:swap;
+  src:url('/fonts/newsreader-300-italic.woff2') format('woff2');
+}
+
+
+/* ──────────────────────────────────────────────────────────── remise à zéro */
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
+
+body,h1,h2,h3,p,figure,figcaption,ul,ol,li{ margin:0; padding:0; }
+ul,ol{ list-style:none; }
+
+img,svg{ display:block; max-width:100%; }
+
+button{
+  font:inherit;
+  color:inherit;
+  background:none;
+  border:0;
+  cursor:pointer;
+}
+
+
+/* ───────────────────────────────────────────────────────────────── document */
+
+body{
+  font-family:var(--f-corps);
+  font-weight:var(--p-corps);
+  font-size:var(--ts-corps);
+  line-height:var(--lh-corps);
+  color:var(--ecorce);
+  background:var(--limon);
+  overflow-x:hidden;
+}
+
+
+/* ─────────────────────────────────────────────────── échelle typographique
+   Les capitales sont produites par text-transform et non saisies en dur :
+   le document reste lisible en français correct si la feuille de style
+   tombe, et les lecteurs d'écran n'épellent pas les mots.                  */
+
+.display{
+  font-family:var(--f-display);
+  font-weight:var(--p-display);
+  font-size:var(--ts-display);
+  line-height:var(--lh-display);
+  letter-spacing:var(--ls-display);
+  text-transform:uppercase;
+}
+
+.h2{
+  font-family:var(--f-display);
+  font-weight:var(--p-display);
+  font-size:var(--ts-h2);
+  line-height:var(--lh-h2);
+  letter-spacing:var(--ls-h2);
+  text-transform:uppercase;
+}
+
+.h3{
+  font-family:var(--f-display);
+  font-weight:var(--p-h3);
+  font-size:var(--ts-h3);
+  line-height:var(--lh-label);
+  letter-spacing:var(--ls-h3);
+  text-transform:uppercase;
+}
+
+.label{
+  font-family:var(--f-display);
+  font-weight:var(--p-label);
+  font-size:var(--ts-label);
+  line-height:var(--lh-label);
+  letter-spacing:var(--ls-label);
+  text-transform:uppercase;
+}
+
+.corps{
+  font-family:var(--f-corps);
+  font-weight:var(--p-corps);
+  font-size:var(--ts-corps);
+  line-height:var(--lh-corps);
+  max-width:var(--colonne);
+  text-wrap:pretty;
+}
+
+/* L'italique du sérif : sous-titre du hero, et nom du parfum une fois par
+   section au maximum. Pas d'italique synthétique — la fonte existe.       */
+em,.italique{ font-style:italic; font-weight:var(--p-corps); }
+
+
+/* ───────────────────────────────────────────────────────────────── liens */
+
+a{
+  color:inherit;
+  text-decoration-thickness:var(--filet);
+  text-underline-offset:.22em;
+}
+
+
+/* ───────────────────────────────────────────────────────── accessibilité */
+
+:focus-visible{
+  outline:var(--filet-m) solid var(--craie);
+  outline-offset:var(--focus-offset);
+}
+
+/* Sur les fonds clairs, un contour --craie serait invisible. */
+.hero :focus-visible,
+.objet :focus-visible,
+.palier--tete :focus-visible,
+.palier--coeur :focus-visible{
+  outline-color:var(--ecorce);
+}
+
+.visuellement-cache{
+  position:absolute;
+  width:1px;height:1px;
+  margin:-1px;padding:0;border:0;
+  overflow:hidden;
+  clip-path:inset(50%);
+  white-space:nowrap;
+}
