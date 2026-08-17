@@ -135,13 +135,15 @@ function initRail() {
    multiply. En screen, sur un fond quasi blanc, les deux copies décalées
    sont écrasées vers le blanc et l'effet devient invisible.               */
 
+let tracerFlaconHero = () => gsap.timeline();
+
 function entreeHero() {
   const lignes = Array.from(document.querySelectorAll('.hero .ligne'));
   const flacon = document.querySelector('.hero__flacon');
   if (!lignes.length) return;
 
   if (REDUIT) {
-    gsap.set([...lignes, flacon], { opacity: 1, y: 0 });
+    gsap.set([...lignes, flacon].filter(Boolean), { opacity: 1, y: 0 });
     return;
   }
 
@@ -173,11 +175,11 @@ function entreeHero() {
 
   tl.set(fantomes.map(f => f.el), { display: 'none' }, .32);
 
-  if (flacon) {
-    tl.fromTo(flacon,
-      { opacity: 0, scale: .96 },
-      { opacity: 1, scale: 1, duration: .9, ease: 'expo.out' }, .2);
-  }
+  /* Le flacon se trace pendant que les lignes montent, décalé de 250 ms.
+     Un départ simultané ferait mécanique ; ce décalage fait vivant, et il
+     laisse au titre le temps d'exister seul avant que le regard parte à
+     droite. */
+  tl.add(tracerFlaconHero(), .25);
 }
 
 
@@ -209,15 +211,15 @@ function initAtelier() {
    après un fondu de 0,3 s et le hero serait visible avant de repartir en
    arrière. On évite le sursaut. */
 if (!REDUIT) {
-  const lignes = document.querySelectorAll('.hero .ligne');
-  const flacon = document.querySelector('.hero__flacon');
-  gsap.set(lignes, { yPercent: 26, opacity: 0 });
-  if (flacon) gsap.set(flacon, { opacity: 0, scale: .96 });
+  gsap.set(document.querySelectorAll('.hero .ligne'), { yPercent: 26, opacity: 0 });
 }
 
 initRail();
 initPyramide({ tokens: TOKENS, seuils: SEUILS, reduit: REDUIT });
-initFlacon({ reduit: REDUIT });
+
+/* initFlacon rend le tracé du hero au lieu de le jouer : il doit tomber
+   dans la séquence d'entrée, pas derrière le rideau de la signature. */
+({ tracerHero: tracerFlaconHero } = initFlacon({ reduit: REDUIT }));
 initAtelier();
 initVelocite({ lenis, reduit: REDUIT });
 

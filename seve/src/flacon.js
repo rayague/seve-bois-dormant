@@ -32,57 +32,85 @@ const ETATS = [
   { large: 230, larg: 10, fin: 178, etiq: .76 }
 ];
 
+
+/* ---------------------------------------------------------------- tracé
+   Masque chaque contour par son propre pointillé, et rend les aplats
+   transparents. Le flacon existe alors sans être visible : il ne reste
+   qu'à le dessiner.                                                      */
+
+function amorcer(svg) {
+  const mesurer = el => {
+    if (!el.getTotalLength) return null;
+    const l = el.getTotalLength();
+    if (!l) return null;
+    gsap.set(el, { strokeDasharray: l, strokeDashoffset: l });
+    return el;
+  };
+
+  const contour = [...svg.querySelectorAll('.fl-arete, .fl-col')].map(mesurer).filter(Boolean);
+  const graves  = [...svg.querySelectorAll('.fl-bouchon__grain, .fl-etiquette')].map(mesurer).filter(Boolean);
+  const pleins  = [...svg.querySelectorAll(
+    '.fl-verre, .fl-jus, .fl-surface, .fl-reflet, .fl-bouchon__bloc')];
+
+  gsap.set(pleins, { opacity: 0 });
+  return { contour, graves, pleins };
+}
+
+/* Le contour se dessine, puis le verre se remplit, puis les gravures.
+   Toujours dans cet ordre : c'est celui d'une main qui dessine.          */
+function tracer({ contour, graves, pleins }, { duree = 1.2 } = {}) {
+  return gsap.timeline()
+    .to(contour, { strokeDashoffset: 0, duration: duree, ease: 'power2.inOut' })
+    .to(pleins,  { opacity: 1, duration: duree * .46, ease: 'power2.out', stagger: .07 }, `-=${duree * .38}`)
+    .to(graves,  { strokeDashoffset: 0, duration: duree * .66, ease: 'power2.out', stagger: .06 }, `-=${duree * .29}`);
+}
+
+
+/* ---------------------------------------------------------------- module */
+
 export function initFlacon({ reduit }) {
   const heroSvg  = document.querySelector('.hero .flacon');
   const grandSvg = document.querySelector('.flacon--grand');
 
-  /* ---------------------------------------------- dérive ambiante du hero
-     4 px verticaux, cycle de 6 s. C'est le seul mouvement permanent de la
-     page : il donne un pouls au hero sans jamais demander l'attention. */
+  /* ------------------------------------------------------- flacon du hero
+     Il se trace au lieu d'apparaître en fondu, en même temps que les deux
+     lignes du titre montent. C'est le premier geste après la signature,
+     donc le sommet de la courbe d'intensité : il a le droit d'être ample.
+
+     Le tracé n'est pas déclenché ici mais rendu à main.js, qui le place
+     dans la séquence d'entrée du hero — sinon il se jouerait derrière le
+     rideau de la signature, et personne ne le verrait.                   */
+
+  let tracerHero = () => gsap.timeline();
+
   if (heroSvg && !reduit) {
-    gsap.to(heroSvg, {
-      y: -4,
-      duration: 3,
-      ease: 'sine.inOut',
-      repeat: -1,
-      yoyo: true
-    });
+    const pieces = amorcer(heroSvg);
+    tracerHero = () => tracer(pieces, { duree: 1.15 })
+      .add(() => {
+        /* Dérive ambiante : 4 px verticaux, cycle de 6 s. Elle ne démarre
+           qu'une fois le flacon dessiné. C'est le seul mouvement permanent
+           de la page — il lui donne un pouls sans demander l'attention. */
+        gsap.to(heroSvg, {
+          y: -4, duration: 3, ease: 'sine.inOut', repeat: -1, yoyo: true
+        });
+      });
   }
 
-  /* ------------------------------------------------- tracé à l'arrivée
-     Le contour se dessine, puis le verre se remplit. Une fois, à l'entrée
-     de la section. Le flacon du hero en est exclu : il a déjà son entrée
-     après la signature, et deux gestes coup sur coup s'annulent.         */
+  /* ------------------------------------------------- flacon de la section 02
+     Même geste, déclenché à l'entrée de la section.                      */
   if (grandSvg && !reduit) {
-    const contour = grandSvg.querySelectorAll('.fl-arete, .fl-col');
-    const graves  = grandSvg.querySelectorAll('.fl-bouchon__grain, .fl-etiquette');
-    const pleins  = grandSvg.querySelectorAll(
-      '.fl-verre, .fl-jus, .fl-surface, .fl-reflet, .fl-bouchon__bloc');
-
-    const amorcer = el => {
-      if (!el.getTotalLength) return null;
-      const l = el.getTotalLength();
-      if (!l) return null;
-      gsap.set(el, { strokeDasharray: l, strokeDashoffset: l });
-      return el;
-    };
-    const tracesContour = [...contour].map(amorcer).filter(Boolean);
-    const tracesGravees = [...graves].map(amorcer).filter(Boolean);
-    gsap.set(pleins, { opacity: 0 });
-
+    const pieces = amorcer(grandSvg);
     gsap.timeline({ scrollTrigger: { trigger: grandSvg, start: 'top 78%', once: true } })
-      .to(tracesContour, { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut' })
-      .to(pleins, { opacity: 1, duration: .55, ease: 'power2.out', stagger: .07 }, '-=.45')
-      .to(tracesGravees, { strokeDashoffset: 0, duration: .8, ease: 'power2.out', stagger: .06 }, '-=.35');
+      .add(tracer(pieces, { duree: 1.2 }));
   }
 
   /* ------------------------------------------ rotation scrubée au scroll */
-  if (!grandSvg || reduit) return;
+  if (!grandSvg || reduit) return { tracerHero };
 
   const large = grandSvg.querySelector('[data-flacon="reflet-large"]');
   const fin   = grandSvg.querySelector('[data-flacon="reflet-fin"]');
   const etiq  = grandSvg.querySelector('.fl-etiquette');
-  if (!large || !fin) return;
+  if (!large || !fin) return { tracerHero };
 
   gsap.set(etiq, { transformOrigin: '160px 334px' });
 
@@ -101,4 +129,6 @@ export function initFlacon({ reduit }) {
       .to(fin,   { attr: { x: e.fin }, ease: 'none' }, t)
       .to(etiq,  { scaleX: e.etiq, ease: 'none' }, t);
   });
+
+  return { tracerHero };
 }
