@@ -49,6 +49,33 @@ export function initFlacon({ reduit }) {
     });
   }
 
+  /* ------------------------------------------------- tracé à l'arrivée
+     Le contour se dessine, puis le verre se remplit. Une fois, à l'entrée
+     de la section. Le flacon du hero en est exclu : il a déjà son entrée
+     après la signature, et deux gestes coup sur coup s'annulent.         */
+  if (grandSvg && !reduit) {
+    const contour = grandSvg.querySelectorAll('.fl-arete, .fl-col');
+    const graves  = grandSvg.querySelectorAll('.fl-bouchon__grain, .fl-etiquette');
+    const pleins  = grandSvg.querySelectorAll(
+      '.fl-verre, .fl-jus, .fl-surface, .fl-reflet, .fl-bouchon__bloc');
+
+    const amorcer = el => {
+      if (!el.getTotalLength) return null;
+      const l = el.getTotalLength();
+      if (!l) return null;
+      gsap.set(el, { strokeDasharray: l, strokeDashoffset: l });
+      return el;
+    };
+    const tracesContour = [...contour].map(amorcer).filter(Boolean);
+    const tracesGravees = [...graves].map(amorcer).filter(Boolean);
+    gsap.set(pleins, { opacity: 0 });
+
+    gsap.timeline({ scrollTrigger: { trigger: grandSvg, start: 'top 78%', once: true } })
+      .to(tracesContour, { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut' })
+      .to(pleins, { opacity: 1, duration: .55, ease: 'power2.out', stagger: .07 }, '-=.45')
+      .to(tracesGravees, { strokeDashoffset: 0, duration: .8, ease: 'power2.out', stagger: .06 }, '-=.35');
+  }
+
   /* ------------------------------------------ rotation scrubée au scroll */
   if (!grandSvg || reduit) return;
 

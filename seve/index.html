@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>SÈVE — Bois Dormant, eau de parfum boisée</title>
-<meta name="description" content="Bois Dormant, eau de parfum boisée unisexe. Vétiver de Haïti, iris pallida, cèdre de l'Atlas. 100 ml, 185 €. SÈVE, parfumerie de niche à Grasse — une création par an.">
+<title>SÈVE · Bois Dormant, eau de parfum boisée</title>
+<meta name="description" content="Bois Dormant, eau de parfum boisée unisexe. Vétiver de Haïti, iris pallida, cèdre de l'Atlas. 100 ml, 185 €. SÈVE, parfumerie de niche à Grasse. Une création par an.">
 
 <link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/newsreader-300.woff2" crossorigin>
@@ -19,7 +19,7 @@
 
 <!-- ══ RAIL DE PROGRESSION ══════════════════════════════════════════════════
      Statique en S2 : la piste et les trois marques existent, le remplissage
-     est piloté au scroll en S3. Décoratif — la pyramide olfactive est déjà
+     est piloté au scroll en S3. Décoratif : la pyramide olfactive est déjà
      ordonnée dans le document, le rail ne fait que la redire visuellement. -->
 <div class="rail" aria-hidden="true">
   <span class="rail__piste"></span>
@@ -36,7 +36,7 @@
        Pas de bouton, pas de menu. Le premier scroll est le seul appel. -->
   <section class="hero" id="hero" data-ambiance="clair">
     <div class="hero__texte" data-flou>
-      <p class="label">SÈVE — Grasse</p>
+      <p class="label">SÈVE · Grasse</p>
       <h1 class="display">
         <span class="ligne"><span class="ligne__texte">Bois</span></span>
         <span class="ligne"><span class="ligne__texte">Dormant</span></span>
@@ -85,12 +85,12 @@
   <!-- ══ 02 · LE FLACON ════════════════════════════════════════════════════ -->
   <section class="objet" id="objet" data-ambiance="clair">
     <div class="objet__intro" data-flou>
-      <p class="label">02 — L'objet</p>
+      <p class="label">02 · L'objet</p>
       <h2 class="h2">Coulé, pas moulé</h2>
       <p class="corps">
-        Le verre est coulé à la main : l'épaisseur varie d'un flacon à
+        Le verre est coulé à la main : l'épaisseur varie d'un flacon à
         l'autre. Le bouchon est taillé dans un cèdre massif, sans
-        vernis — il prend l'odeur du parfum au fil des mois.
+        vernis. Il prend l'odeur du parfum au fil des mois.
       </p>
     </div>
 
@@ -133,7 +133,7 @@
       <figcaption class="annots">
         <span class="annot annot--verre">Verre coulé à la main</span>
         <span class="annot annot--bouchon">Bouchon en cèdre massif</span>
-        <span class="annot annot--format">100 ml — 185 €</span>
+        <span class="annot annot--format">100 ml · 185 €</span>
       </figcaption>
     </figure>
   </section>
@@ -151,16 +151,45 @@
 
     <article class="palier palier--tete">
       <div class="palier__cadre" data-flou>
-        <p class="label">03 — La pyramide</p>
+        <p class="label">03 · La pyramide</p>
         <h2 class="h2">Trois temps</h2>
         <h3 class="h3">Tête</h3>
+
+        <!-- Planche de matières. Décoratives : les noms sont déjà en texte
+             juste en dessous, donc aria-hidden. Le trait prend la couleur
+             interpolée du palier via currentColor. -->
+        <figure class="planche" aria-hidden="true">
+          <svg class="dessin" viewBox="0 0 120 120" focusable="false">
+            <!-- bergamote -->
+            <circle cx="52" cy="74" r="28"/>
+            <path d="M52,46 C51,38 53,31 56,25"/>
+            <path d="M57,27 C70,17 89,20 97,31 C86,43 68,41 57,27 Z"/>
+            <path d="M78,26 C82,30 87,33 93,34"/>
+            <path d="M32,64 C39,58 48,55 56,57"/>
+            <path d="M28,84 C33,93 42,99 52,101"/>
+            <circle class="accent" cx="52" cy="47" r="3.5"/>
+          </svg>
+          <svg class="dessin" viewBox="0 0 120 120" focusable="false">
+            <!-- poivre rose -->
+            <path d="M60,112 C58,94 56,80 58,66"/>
+            <path d="M58,68 C50,60 42,54 34,50 M58,68 C66,60 74,54 82,50
+                     M58,74 C50,70 43,66 37,63 M58,74 C66,70 73,66 79,63
+                     M58,84 C52,80 47,77 42,75 M58,84 C64,80 69,77 74,75"/>
+            <circle cx="31" cy="47" r="7"/><circle cx="85" cy="47" r="7"/>
+            <circle cx="34" cy="61" r="6"/><circle cx="82" cy="61" r="6"/>
+            <circle cx="39" cy="73" r="5"/><circle cx="77" cy="73" r="5"/>
+            <circle cx="58" cy="40" r="8"/>
+            <circle class="accent" cx="58" cy="40" r="3.5"/>
+          </svg>
+        </figure>
+
         <p class="matieres">
           <span class="matiere">Bergamote de Calabre</span>
           <span class="matiere">Poivre rose</span>
         </p>
         <p class="corps">
           Ça ouvre sec. La bergamote griffe, le poivre rose répond dans
-          la seconde. Dix minutes, pas plus : le reste attend dessous.
+          la seconde. Dix minutes, pas plus : le reste attend dessous.
         </p>
       </div>
     </article>
@@ -168,13 +197,42 @@
     <article class="palier palier--coeur">
       <div class="palier__cadre" data-flou>
         <h3 class="h3">Cœur</h3>
+
+        <figure class="planche" aria-hidden="true">
+          <svg class="dessin" viewBox="0 0 120 120" focusable="false">
+            <!-- iris pallida : le rhizome, pas la fleur. Le texte dit
+                 « c'est une racine » ; le dessin doit dire la même chose. -->
+            <path d="M22,68 C30,58 44,55 58,57 C74,59 88,62 98,70
+                     C90,80 74,85 58,83 C42,81 28,78 22,68 Z"/>
+            <path d="M44,57 C42,65 42,74 44,82 M64,59 C62,67 62,75 64,83
+                     M82,63 C80,70 80,77 82,83"/>
+            <path d="M32,79 C30,88 28,96 24,105 M48,83 C47,92 46,100 44,109
+                     M64,83 C64,93 64,101 63,110 M80,83 C81,91 82,99 84,107
+                     M93,76 C96,84 99,91 102,98"/>
+            <path d="M54,56 C48,42 46,28 48,13"/>
+            <path d="M60,56 C60,40 62,26 66,14"/>
+            <path d="M67,58 C71,45 77,34 85,25"/>
+            <circle class="accent" cx="60" cy="70" r="3.5"/>
+          </svg>
+          <svg class="dessin" viewBox="0 0 120 120" focusable="false">
+            <!-- cèdre de l'Atlas : rameau et touffes d'aiguilles -->
+            <path d="M14,104 C34,86 56,66 78,46 C87,38 94,32 101,27"/>
+            <path d="M30,90 L18,80 M30,90 L22,74 M30,90 L32,72
+                     M48,73 L36,63 M48,73 L41,57 M48,73 L51,55
+                     M66,57 L54,47 M66,57 L59,41 M66,57 L69,39
+                     M84,41 L73,32 M84,41 L78,26 M84,41 L88,25"/>
+            <path d="M30,90 L44,92 M48,73 L62,74 M66,57 L79,57 M84,41 L96,40"/>
+            <circle class="accent" cx="101" cy="27" r="3.5"/>
+          </svg>
+        </figure>
+
         <p class="matieres">
           <span class="matiere">Iris pallida</span>
           <span class="matiere">Cèdre de l'Atlas</span>
         </p>
         <p class="corps">
           L'iris pallida arrive poudré, presque froid. C'est une racine,
-          pas une fleur, et il lui faut six ans pour sentir : trois de
+          pas une fleur, et il lui faut six ans pour sentir : trois de
           culture, trois de séchage. Le cèdre de l'Atlas le tient par en
           dessous, droit et sec. Ici le parfum cesse de bouger.
         </p>
@@ -184,18 +242,44 @@
     <article class="palier palier--fond">
       <div class="palier__cadre" data-flou>
         <h3 class="h3">Fond</h3>
+
+        <figure class="planche" aria-hidden="true">
+          <svg class="dessin" viewBox="0 0 120 120" focusable="false">
+            <!-- vétiver : la touffe coupée et le chevelu racinaire.
+                 C'est la racine qu'on distille, pas la partie aérienne. -->
+            <path d="M40,36 C48,29 60,27 72,29 C82,31 89,35 89,39
+                     C81,45 64,47 52,45 C44,43 40,40 40,36 Z"/>
+            <path d="M50,31 L46,13 M58,28 L57,9 M66,28 L70,11 M75,31 L82,15"/>
+            <path d="M46,44 C42,61 40,79 38,101 M54,46 C52,65 52,83 51,105
+                     M62,46 C62,65 63,84 65,106 M70,45 C72,63 76,81 80,101
+                     M79,42 C83,57 89,71 95,85 M40,41 C34,55 28,69 22,83"/>
+            <path d="M44,71 C40,77 36,81 31,84 M60,77 C56,83 53,88 50,93
+                     M68,73 C72,79 76,83 81,86"/>
+            <circle class="accent" cx="64" cy="37" r="3.5"/>
+          </svg>
+          <svg class="dessin" viewBox="0 0 120 120" focusable="false">
+            <!-- santal : une bille de bois en coupe. Les anneaux de
+                 croissance reprennent la métaphore de l'échelle d'espacement. -->
+            <circle cx="60" cy="62" r="34"/>
+            <circle cx="58" cy="60" r="26"/>
+            <circle cx="57" cy="59" r="18"/>
+            <circle cx="56" cy="58" r="10"/>
+            <path d="M56,58 L33,37 M56,58 L88,45 M56,58 L66,93"/>
+            <circle class="accent" cx="56" cy="58" r="3.5"/>
+          </svg>
+        </figure>
+
         <p class="matieres">
           <span class="matiere">Vétiver de Haïti</span>
           <span class="matiere">Santal</span>
           <span class="matiere">Musc blanc</span>
         </p>
         <p class="corps">
-          Le vétiver d'Haïti ne sent pas le bois : il sent la terre
+          Le vétiver d'Haïti ne sent pas le bois : il sent la terre
           après la pluie, la racine humide, la fumée froide. Le santal
-          l'adoucit sans l'éteindre. Le musc blanc, lui, ne se sent pas
-          — il tient les autres ensemble et les fait durer la journée. À
+          l'adoucit sans l'éteindre. Le musc blanc, lui, ne se sent pas : il tient les autres ensemble et les fait durer la journée. À
           ce stade le parfum a quitté la peau pour passer dessous. On
-          cesse de le percevoir soi-même ; les autres le remarquent.
+          cesse de le percevoir soi-même ; les autres le remarquent.
         </p>
       </div>
     </article>
@@ -207,7 +291,7 @@
        Section volontairement nue. Un seul fade-up en S3, rien d'autre. -->
   <!-- Pas de data-flou ici, et c'est délibéré : la section reste nue. -->
   <section class="atelier" id="atelier" data-ambiance="sombre">
-    <p class="label">04 — L'atelier</p>
+    <p class="label">04 · L'atelier</p>
     <h2 class="h2">Dix-huit mois sous terre</h2>
 
     <p class="corps">
@@ -232,15 +316,15 @@
 
   <!-- ══ 05 · ACHAT ════════════════════════════════════════════════════════ -->
   <section class="achat" id="achat" data-ambiance="sombre" data-flou>
-    <p class="label">05 — Acheter</p>
-    <h2 class="h2">Bois Dormant — 100 ml</h2>
+    <p class="label">05 · Acheter</p>
+    <h2 class="h2">Bois Dormant, 100 ml</h2>
 
     <p class="prix">185 €</p>
 
     <button class="bouton" type="button">Ajouter au panier</button>
 
     <ul class="mentions">
-      <li>Livraison offerte en France — 2 à 4 jours</li>
+      <li>Livraison offerte en France, 2 à 4 jours</li>
       <li>Retour sous 30 jours, flacon ouvert accepté</li>
       <li>Écrire à <a href="mailto:bonjour@seve-grasse.fr">bonjour@seve-grasse.fr</a></li>
     </ul>

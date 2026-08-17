@@ -67,7 +67,7 @@ export function initPyramide({ tokens, seuils, reduit }) {
      plein sous son bloc de texte, puis descend dans son dernier quart. */
   const arrets = [
     { el: paliers[0], de: T.tete,  vers: T.coeur, bascule: .78 },
-    { el: paliers[1], de: T.coeur, vers: T.bas,   bascule: .82 },
+    { el: paliers[1], de: T.coeur, vers: T.bas,   bascule: .86 },
     { el: paliers[2], de: T.bas,   vers: T.bas,   bascule: 1 }
   ];
 
@@ -152,7 +152,11 @@ export function initPyramide({ tokens, seuils, reduit }) {
       return;
     }
 
-    const mots = p.textContent.trim().split(/\s+/);
+    /* On ne découpe que sur les espaces ordinaires. `\s` avalerait aussi
+       l'espace insécable, et « pas : il » se retrouverait coupé en deux
+       mots — un deux-points pourrait alors ouvrir une ligne, ce que la
+       typographie française interdit. */
+    const mots = p.textContent.replace(/[\n\r\t ]+/g, ' ').trim().split(' ');
     p.textContent = '';
     const spans = mots.map((mot, i) => {
       const s = document.createElement('span');
@@ -170,5 +174,60 @@ export function initPyramide({ tokens, seuils, reduit }) {
         duration: .5, ease: 'power2.out', stagger: .03,
         scrollTrigger: { trigger: palier, start: 'top 65%', once: true }
       });
+  });
+
+  revelerPlanches(reduit);
+}
+
+
+/* ------------------------------------------------- tracé des planches
+   Chaque dessin se trace lui-même, une seule fois, à l'arrivée du palier.
+   C'est volontairement le geste le plus spectaculaire de la page — et
+   c'est pour ça qu'il ne se répète jamais et ne boucle pas. Un trait qui
+   se redessine en permanence cesse d'être un geste et devient un décor.  */
+
+function revelerPlanches(reduit) {
+  document.querySelectorAll('.planche').forEach(planche => {
+    const palier  = planche.closest('.palier') || planche;
+    const dessins = Array.from(planche.querySelectorAll('.dessin'));
+    const accents = Array.from(planche.querySelectorAll('.accent'));
+
+    if (reduit) {
+      gsap.fromTo(dessins, { opacity: 0 }, {
+        opacity: 1, duration: .3, ease: 'none',
+        scrollTrigger: { trigger: palier, start: 'top 65%', once: true }
+      });
+      return;
+    }
+
+    // On mesure chaque tracé pour le masquer par son propre pointillé.
+    const traits = [];
+    dessins.forEach(svg => {
+      svg.querySelectorAll('path, circle').forEach(el => {
+        if (el.classList.contains('accent') || !el.getTotalLength) return;
+        const longueur = el.getTotalLength();
+        if (!longueur) return;
+        gsap.set(el, { strokeDasharray: longueur, strokeDashoffset: longueur });
+        traits.push(el);
+      });
+    });
+    if (!traits.length) return;
+
+    gsap.set(accents, {
+      opacity: 0, scale: 0,
+      transformBox: 'fill-box', transformOrigin: 'center center'
+    });
+
+    gsap.timeline({ scrollTrigger: { trigger: palier, start: 'top 62%', once: true } })
+      .to(traits, {
+        strokeDashoffset: 0,
+        duration: 1.1,
+        ease: 'power2.inOut',
+        stagger: .06
+      })
+      .to(accents, {
+        opacity: 1, scale: 1,
+        duration: .4, ease: 'expo.out', stagger: .09
+      }, '-=.35');
   });
 }
