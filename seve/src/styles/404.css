@@ -1,0 +1,137 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   SÈVE, page introuvable
+   Feuille autonome : la page d'erreur ne charge pas sections.css, elle n'a
+   besoin ni du rail, ni de la pyramide, ni des planches.
+   Aucun JavaScript. Le flacon se trace en CSS pur.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.perdu{
+  background:var(--ecorce);
+  color:var(--craie);
+  min-height:100svh;
+}
+
+.perdu__cadre{
+  min-height:100svh;
+  max-width:var(--contenu);
+  margin-inline:auto;
+  padding:var(--s6) var(--s3);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:var(--s5);
+}
+
+.perdu__texte{
+  display:flex;
+  flex-direction:column;
+  gap:var(--s2);
+}
+
+.perdu .display{ margin-block:var(--s1); }
+
+.perdu .corps{ color:var(--craie); }
+
+/* Le lien de retour prend l'accent chaud, seule couleur de la page.
+   --resine-txt sur --ecorce donne 6,60:1. */
+.perdu__retour{
+  align-self:flex-start;
+  margin-top:var(--s3);
+  color:var(--resine-txt);
+  font-family:var(--f-display);
+  font-weight:var(--p-label);
+  font-size:var(--ts-label);
+  line-height:var(--lh-label);
+  letter-spacing:var(--ls-label);
+  text-transform:uppercase;
+  text-decoration-thickness:var(--filet);
+  text-underline-offset:.5em;
+}
+
+.perdu__flacon{ display:flex; justify-content:center; }
+.perdu .flacon{ width:min(46vw, 200px); height:auto; }
+
+
+/* ─────────────────────────────────────────────────────── pièces du flacon
+   Répétées ici parce que sections.css n'est pas chargé. Les valeurs
+   viennent des tokens, aucune couleur n'est écrite en dur.               */
+
+.perdu .fl-verre        { fill:var(--limon); opacity:.16; }
+.perdu .fl-arete        { fill:none; stroke:var(--craie); stroke-width:1.5; opacity:.72; }
+.perdu .fl-col          { fill:none; stroke:var(--craie); stroke-width:1; opacity:.4; }
+.perdu .fl-jus          { fill:var(--seve); opacity:.62; }
+.perdu .fl-surface      { fill:var(--seve); opacity:.9; }
+.perdu .fl-reflet       { fill:var(--craie); opacity:.2; }
+.perdu .fl-bouchon__bloc{ fill:var(--craie); opacity:.14; }
+.perdu .fl-bouchon__grain{ fill:none; stroke:var(--craie); stroke-width:1; opacity:.34; }
+
+
+/* ───────────────────────────────────────────────────────────── le tracé
+   Même geste que sur le site, obtenu sans une ligne de JavaScript.
+   pathLength="1" dans le SVG normalise chaque chemin, le pointillé vaut
+   donc 1 quelle que soit la longueur réelle.                            */
+
+.perdu .fl-arete,
+.perdu .fl-col,
+.perdu .fl-bouchon__grain{
+  stroke-dasharray:1;
+  stroke-dashoffset:1;
+  animation:tracer 1.5s var(--e-sortie) forwards;
+}
+
+.perdu .fl-arete         { animation-delay:.35s; }
+.perdu .fl-col           { animation-delay:1.05s; animation-duration:.7s; }
+.perdu .fl-bouchon__grain{ animation-delay:1.15s; animation-duration:.7s; }
+
+.perdu .fl-verre,
+.perdu .fl-jus,
+.perdu .fl-surface,
+.perdu .fl-reflet,
+.perdu .fl-bouchon__bloc{
+  animation:remplir .7s var(--e-retour) 1.15s backwards;
+}
+
+.perdu__texte > *{ animation:monter .8s var(--e-sortie) backwards; }
+.perdu__texte > :nth-child(1){ animation-delay:.05s; }
+.perdu__texte > :nth-child(2){ animation-delay:.14s; }
+.perdu__texte > :nth-child(3){ animation-delay:.23s; }
+.perdu__texte > :nth-child(4){ animation-delay:.32s; }
+
+@keyframes tracer  { to   { stroke-dashoffset:0; } }
+@keyframes remplir { from { opacity:0; } }
+@keyframes monter  { from { opacity:0; transform:translateY(18px); } }
+
+
+/* Le fondu de 0,3 s remplace tout, comme sur le reste du site. */
+@media (prefers-reduced-motion: reduce){
+  .perdu .fl-arete,
+  .perdu .fl-col,
+  .perdu .fl-bouchon__grain{
+    stroke-dashoffset:0;
+    animation:none;
+  }
+  .perdu__texte > *,
+  .perdu .fl-verre,
+  .perdu .fl-jus,
+  .perdu .fl-surface,
+  .perdu .fl-reflet,
+  .perdu .fl-bouchon__bloc{ animation:none; }
+}
+
+
+@media (min-width:768px){
+  .perdu__cadre{
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between;
+    gap:var(--s6);
+    padding-inline:var(--s5);
+  }
+  .perdu__texte { flex:1 1 auto; }
+  .perdu__flacon{ flex:0 0 auto; }
+  .perdu .flacon{ width:min(26vw, 240px); }
+}
+
+@media (min-width:1140px){
+  .perdu__cadre{ padding-inline:var(--s6); }
+}

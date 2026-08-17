@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Page introuvable · SÈVE</title>
+<meta name="description" content="Cette page n'existe pas. Bois Dormant, lui, est toujours là.">
+<meta name="robots" content="noindex">
+
+<link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-700.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/newsreader-300.woff2" crossorigin>
+
+<link rel="stylesheet" href="/src/styles/tokens.css">
+<link rel="stylesheet" href="/src/styles/base.css">
+<link rel="stylesheet" href="/src/styles/404.css">
+</head>
+
+<body class="perdu">
+
+<!-- Le fond le plus sombre de la palette. Une page d'erreur est le fond du
+     flacon : c'est là que le parcours s'arrête, donc c'est là que la page
+     est la plus noire. Aucun JavaScript, le tracé se fait en CSS pur. -->
+
+<main class="perdu__cadre">
+
+  <div class="perdu__texte">
+    <p class="label">Erreur 404</p>
+    <!-- L'espace avant le <br> est délibéré : sans lui, le nom accessible
+         du titre vaut « Rienici » et se lit comme un seul mot. -->
+    <h1 class="display">Rien <br>ici</h1>
+    <p class="corps">
+      Cette page n'existe pas, ou n'existe plus.
+      Le flacon, lui, est toujours là.
+    </p>
+    <a class="perdu__retour" href="/">Revenir au parfum</a>
+  </div>
+
+  <div class="perdu__flacon">
+    <svg class="flacon" viewBox="0 0 320 460" aria-hidden="true" focusable="false">
+      <defs>
+        <clipPath id="fl-404-corps">
+          <path d="M60,208 C60,180 84,160 128,152 L128,120 L192,120 L192,152
+                   C236,160 260,180 260,208 L260,432 C260,437 256,441 251,441
+                   L69,441 C64,441 60,437 60,432 Z"/>
+        </clipPath>
+      </defs>
+
+      <g class="fl-bouchon">
+        <path class="fl-bouchon__bloc" d="M114,18 L206,18 L202,120 L118,120 Z"/>
+        <!-- pathLength normalise chaque tracé à 1 : le pointillé du CSS n'a
+             plus besoin de connaître la longueur réelle du chemin. -->
+        <path class="fl-bouchon__grain" pathLength="1"
+              d="M124,38 L196,38 M122,58 L198,58 M120,80 L200,80 M119,101 L201,101"/>
+      </g>
+
+      <path class="fl-verre"
+            d="M60,208 C60,180 84,160 128,152 L128,120 L192,120 L192,152
+               C236,160 260,180 260,208 L260,432 C260,437 256,441 251,441
+               L69,441 C64,441 60,437 60,432 Z"/>
+
+      <g clip-path="url(#fl-404-corps)">
+        <rect class="fl-jus"     x="52" y="250" width="216" height="200"/>
+        <rect class="fl-surface" x="52" y="250" width="216" height="2"/>
+        <rect class="fl-reflet"  x="82" y="180" width="14" height="236"/>
+      </g>
+
+      <path class="fl-arete" pathLength="1"
+            d="M60,208 C60,180 84,160 128,152 L128,120 L192,120 L192,152
+               C236,160 260,180 260,208 L260,432 C260,437 256,441 251,441
+               L69,441 C64,441 60,437 60,432 Z"/>
+      <path class="fl-col" pathLength="1" d="M128,152 L192,152"/>
+    </svg>
+  </div>
+
+</main>
+
+</body>
+</html>
