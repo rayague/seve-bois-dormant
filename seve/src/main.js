@@ -228,11 +228,16 @@ initVelocite({ lenis, reduit: REDUIT });
    un péage au visiteur qui revient. Décision du studio, assumée : en phase
    de démonstration on veut la revoir à chaque fois. Elle reste sautable au
    premier scroll, clic, touche ou touchmove. */
+/* duration: 4 au lieu de 2. On passe par le paramètre exposé par le module,
+   qui applique un timeScale global : les six plans, leurs proportions et
+   leurs easings restent strictement intacts, tout se joue simplement deux
+   fois moins vite. La timeline n'est pas touchée. */
 playSignature({
   chair: TOKENS.craie,
   peau:  TOKENS.resine,
   fond:  TOKENS.ecorce,
-  oncePerSession: false
+  oncePerSession: false,
+  duration: 4
 }).then(() => {
   lenis.start();
   entreeHero();
