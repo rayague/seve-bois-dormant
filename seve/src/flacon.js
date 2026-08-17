@@ -1,13 +1,13 @@
 /**
  * ============================================================================
- * SÈVE — flacon.js
+ * SÈVE, flacon.js
  * ----------------------------------------------------------------------------
  * Isolé volontairement : ce module pourra être remplacé par un rendu Blender
  * sans qu'aucun autre fichier ne bouge. Sa seule dépendance au reste du site
  * est la présence des attributs data-flacon dans le SVG.
  *
  * Pas de séquence d'images. La rotation est simulée en animant les masques
- * de lumière et les reflets d'un SVG unique — douze états suffisent à
+ * de lumière et les reflets d'un SVG unique, douze états suffisent à
  * lire le mouvement, et le fichier pèse deux kilo-octets au lieu de deux
  * cents.
  * ============================================================================
@@ -78,7 +78,7 @@ export function initFlacon({ reduit }) {
      donc le sommet de la courbe d'intensité : il a le droit d'être ample.
 
      Le tracé n'est pas déclenché ici mais rendu à main.js, qui le place
-     dans la séquence d'entrée du hero — sinon il se jouerait derrière le
+     dans la séquence d'entrée du hero, sinon il se jouerait derrière le
      rideau de la signature, et personne ne le verrait.                   */
 
   let tracerHero = () => gsap.timeline();
@@ -89,7 +89,7 @@ export function initFlacon({ reduit }) {
       .add(() => {
         /* Dérive ambiante : 4 px verticaux, cycle de 6 s. Elle ne démarre
            qu'une fois le flacon dessiné. C'est le seul mouvement permanent
-           de la page — il lui donne un pouls sans demander l'attention. */
+           de la page, il lui donne un pouls sans demander l'attention. */
         gsap.to(heroSvg, {
           y: -4, duration: 3, ease: 'sine.inOut', repeat: -1, yoyo: true
         });

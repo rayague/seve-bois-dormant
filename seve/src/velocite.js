@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * SÈVE — velocite.js
+ * SÈVE, velocite.js
  * ----------------------------------------------------------------------------
  * Flou de vitesse. Le seul effet coûteux autorisé, et le seul qui donne la
  * sensation de caméra : un flou vertical proportionnel à la vélocité du

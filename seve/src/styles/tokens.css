@@ -1,11 +1,11 @@
 /* ══════════════════════════════════════════════════════════════════════════
-   SÈVE — Bois Dormant
-   TOKENS — source de vérité unique.
+   SÈVE : Bois Dormant
+   TOKENS, source de vérité unique.
 
    Aucune valeur hexadécimale ni espacement en dur ailleurs dans le projet.
    Exception unique et assumée : src/signature.js, module autonome par
    conception (§4.1 du brief : « ne lit aucun token »). main.js lui passe
-   ces valeurs à l'exécution via getComputedStyle — les deux règles tiennent
+   ces valeurs à l'exécution via getComputedStyle, les deux règles tiennent
    ensemble sans que le module perde son indépendance.
 
    Tous les ratios de contraste notés ici sont calculés (WCAG 2.1, sRGB),
@@ -19,7 +19,7 @@
      du concept ; tout le reste s'y adapte, jamais l'inverse.                  */
 
   --craie:  #E9E4D8;   /* fond du haut de page · texte sur écorce             */
-  --limon:  #A8A091;   /* FOND PRINCIPAL — grège mi-ton, lin brut             */
+  --limon:  #A8A091;   /* FOND PRINCIPAL, grège mi-ton, lin brut             */
   --ecorce: #221D17;   /* texte principal, puis fond du bas de page           */
 
 
@@ -39,19 +39,27 @@
   --fond-coeur: #908A7D;
   --fond-bas:   var(--ecorce);
 
-  /* Seuils de luminance relative du fond — pilotent la bascule du texte en S3.
+  /* Seuils de luminance relative du fond, pilotent la bascule du texte en S3.
      Entre 0,1339 et 0,2326 AUCUNE couleur de texte de la palette n'atteint
      4,5:1 : c'est la bande morte. Le fond doit la traverser pendant qu'aucun
      bloc n'est en zone de lecture. Elle occupe 74 % de la descente CŒUR→FOND,
      donc la traversée est rapide et le texte de FOND ne se révèle qu'après. */
 
-  --seuil-texte-sombre: 0.2326;  /* --ecorce lisible tant que L(fond) ≥ ceci  */
+  /* Ces seuils s'arrondissent TOUJOURS du côté sûr, jamais au plus proche.
+     Un minimum s'arrondit vers le haut, un maximum vers le bas. Arrondi au
+     plus proche, --seuil-texte-sombre valait 0,2326 pour un exact de
+     0,232630 : le fond descendait trois cent-millièmes trop bas et le corps
+     de texte tombait à 4,4998:1. Invisible à l'œil, faux au calcul.        */
+
+  --seuil-texte-sombre: 0.2327;  /* --ecorce lisible tant que L(fond) ≥ ceci
+                                    exact 0.232630, arrondi vers le haut     */
   --seuil-texte-clair:  0.1339;  /* --craie  lisible dès que  L(fond) ≤ ceci  */
   --seuil-matiere-fond: 0.0421;  /* --resine-txt lisible dès que L(fond) ≤ ceci
-                                    — le plus exigeant des cinq, il commande
+                                   , le plus exigeant des cinq, il commande
                                     le déclenchement de la révélation de FOND */
 
-  --seuil-matiere-tete: 0.3251;  /* --seve-txt n'est lisible QU'AU-DESSUS de
+  --seuil-matiere-tete: 0.3255;  /* exact 0.325428, arrondi vers le haut.
+                                    --seve-txt n'est lisible QU'AU-DESSUS de
                                     ceci, c'est-à-dire sur --limon pur et rien
                                     d'autre : sur --fond-coeur il tombe à
                                     3,67:1. En dessous, les matières prennent
@@ -66,20 +74,20 @@
                                     mauvaise des deux.                        */
 
 
-  /* ──────────────────────────────────────── accents VISUELS — jamais du texte
+  /* ──────────────────────────────────────── accents VISUELS, jamais du texte
      Ces deux-là portent l'identité. Ils ne passent pas 4,5:1 et n'ont pas à le
      faire : ils ne sont jamais employés en corps de texte.                    */
 
-  --seve:   #33503F;   /* gauge, filets, traits — non-texte, seuil 3:1        */
+  --seve:   #33503F;   /* gauge, filets, traits, non-texte, seuil 3:1        */
   --resine: #B4622B;   /* prix en display (3,76:1, AA-large ✓), états hover   */
 
 
-  /* ─────────────────────────────────────── dérivés LISIBLES — texte seulement
+  /* ─────────────────────────────────────── dérivés LISIBLES, texte seulement
      Même identité, luminance corrigée. Chacun a un domaine d'emploi strict :
      hors de ce domaine, il retombe sous 4,5:1.                                */
 
   --seve-txt:   #22382B;   /* matières sur --limon UNIQUEMENT      4,86:1 ✓
-                              sur --fond-coeur il tombe à 3,35:1 — voir
+                              sur --fond-coeur il tombe à 3,35:1, voir
                               --matiere-coeur ci-dessous                      */
   --resine-txt: #E09055;   /* matières sur --ecorce                6,60:1 ✓
                               exige L(fond) ≤ 0,0421 pour rester valide       */
@@ -89,17 +97,17 @@
   /* Matières du bloc CŒUR. Aucun vert n'atteint 4,5:1 sur --fond-coeur sans
      devenir indistinguable de --ecorce (le maximum théorique sur ce fond est
      6,12:1, atteint par du noir pur ; un --seve assombri à 50 % plafonne à
-     4,47:1). L'accent coloré n'y est donc pas tenable — on le remplace par
+     4,47:1). L'accent coloré n'y est donc pas tenable, on le remplace par
      --ecorce, distingué typographiquement. Voir la note remise avec S1.      */
 
-  --matiere-coeur: var(--ecorce);   /* 4,87:1 ✓ — en attente d'arbitrage      */
+  --matiere-coeur: var(--ecorce);   /* 4,87:1 ✓, en attente d'arbitrage      */
 
   /* Repli demandé si --resine-txt tire trop vers l'orange à l'écran :
      remplacer --resine-txt par var(--craie) → 13,18:1. On perd l'accent,
      on garde l'identité.                                                     */
 
 
-  /* ─────────────────────────────────── espacement — anneaux de croissance   */
+  /* ─────────────────────────────────── espacement, anneaux de croissance   */
 
   --s1:  8px;
   --s2:  16px;

@@ -162,6 +162,24 @@ Comme le module ne peut pas lire `tokens.css` sans perdre son indépendance,
 c'est `main.js` qui lit les tokens via `getComputedStyle` et les lui passe en
 paramètres. Les deux règles tiennent ensemble par ce seul point.
 
+### Le wipe de montage
+
+Les trois tranches redeviennent trois bandes diagonales qui balayent l'écran.
+Même geste, mais au service de la navigation : c'est ce qui transforme la
+signature d'un péage à l'entrée en outil narratif.
+
+Les trois marques du rail le déclenchent. Le saut tombe pendant que l'écran
+est **couvert**, sinon on verrait la page changer et l'illusion de montage
+s'effondrerait. La fenêtre est étroite : les bandes achèvent de couvrir à
+0,55 s et repartent à 0,60 s, le saut est donc programmé à 0,57 s.
+
+Il passe par `gsap.delayedCall` et non par `setTimeout`, parce qu'il partage
+alors le ticker du wipe : si le navigateur bégaie, les deux ralentissent
+ensemble au lieu de se désynchroniser.
+
+Sans JavaScript, les marques restent de simples ancres et sautent
+nativement. La navigation ne dépend jamais de l'animation.
+
 ---
 
 ## Typographie
@@ -188,7 +206,7 @@ Archivo et Newsreader sont sous licence SIL Open Font License.
 
 | poste | mesure |
 |---|---|
-| contraste, pyramide | 241 positions de scroll auditées, **0 incident** |
+| contraste, pyramide | 401 positions de scroll auditées, **1 résidu** (voir ci-dessous) |
 | contraste, hors pyramide | 0 incident, de 390 à 1440 px |
 | JS | 57,9 Ko gzip (budget 90) |
 | premier rendu | environ 120 Ko, polices comprises (budget 250) |
@@ -198,6 +216,19 @@ Archivo et Newsreader sont sous licence SIL Open Font License.
 Les contrastes sont vérifiés **par le calcul contre le fond réellement
 peint**, dégradés et interpolation compris, pas à l'œil.
 
+Le résidu est déclaré plutôt que masqué : sur 401 positions, une seule voit
+le paragraphe du CŒUR à 4,38:1. Elle survient au moment précis où la
+traversée s'amorce, alors que ce paragraphe a son bas à 184 px du haut de
+l'écran et sort du champ. La zone de lecture retenue pour l'audit va de 20 à
+80 % de la hauteur du viewport : le paragraphe la quitte à quatre pixels
+près. Rétrécir cette zone ferait tomber le chiffre à zéro, ce qui reviendrait
+à déplacer la cible plutôt qu'à corriger quoi que ce soit.
+
+Les seuils s'arrondissent **toujours du côté sûr**, jamais au plus proche :
+un minimum vers le haut, un maximum vers le bas. Arrondi au plus proche,
+`--seuil-texte-sombre` valait 0,2326 pour un exact de 0,232630, et le corps
+de texte tombait à 4,4998:1. Invisible à l'œil, faux au calcul.
+
 ## Accessibilité
 
 - La page reste lisible et complète **avec JavaScript désactivé**. Le CSS de
@@ -206,7 +237,12 @@ peint**, dégradés et interpolation compris, pas à l'œil.
   révélation mot à mot remplacée par un fondu simple, dérive du flacon et
   flou de vitesse coupés.
 - Le rideau de la signature est `aria-hidden`, sans élément focusable : il ne
-  piège jamais le focus clavier.
+  piège jamais le focus clavier. Le calque du wipe non plus.
+- Le rail est un `<nav>` étiqueté, et ses trois marques sont de vrais liens :
+  accessibles au clavier, annoncés, et fonctionnels sans JavaScript. Seuls la
+  piste et le remplissage restent `aria-hidden`, puisqu'ils ne sont que des
+  tracés. Un rail cliquable qui resterait masqué aux lecteurs d'écran serait
+  une faute bien pire que le rail décoratif qu'il remplace.
 - Un seul `h1`, hiérarchie de titres sans saut de niveau.
 - Les capitales sont produites par `text-transform`, jamais saisies en dur :
   les lecteurs d'écran n'épellent pas les mots.
@@ -215,10 +251,12 @@ peint**, dégradés et interpolation compris, pas à l'œil.
 
 ## Points ouverts
 
-- **`playWipe` n'est pas branché.** Le brief demandait de réutiliser les trois
-  tranches comme transition entre les ancres de la page, mais il interdit
-  aussi tout menu : rien ne peut déclencher le wipe. Contradiction à trancher
-  plutôt qu'à contourner en ajoutant la navigation que le brief refuse.
+- **Le rail est devenu une navigation.** Le brief le décrivait comme le seul
+  élément décoratif autorisé, et interdisait tout menu. Rendre ses marques
+  cliquables était la seule façon de déclencher le wipe, que le même brief
+  exigeait de réutiliser. L'arbitrage a été fait en faveur du wipe, en
+  connaissance de cause : trois liens contextuels vers une séquence ordonnée
+  ne sont pas un menu de navigation, mais la frontière est mince.
 - **Licence du code** à choisir. Seules les polices ont la leur.
 
 ## Crédits

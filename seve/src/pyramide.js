@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * SÈVE — pyramide.js
+ * SÈVE, pyramide.js
  * ----------------------------------------------------------------------------
  * Le seul vrai morceau technique. Deux choses :
  *
@@ -15,14 +15,14 @@
  * POURQUOI LES DEUX COURBES SONT DÉSYNCHRONISÉES
  *
  * Entre L(fond) = 0,1339 et L(fond) = 0,2326, aucune couleur de la palette
- * n'atteint 4,5:1 — ni --ecorce, ni --craie. C'est une propriété du fond
+ * n'atteint 4,5:1, ni --ecorce, ni --craie. C'est une propriété du fond
  * mi-ton, pas un réglage : sur un gris moyen, le maximum théorique est
  * d'environ 4,6:1 et il faut du noir pur ou du blanc pur pour l'atteindre.
  *
  * Cette bande morte est donc infranchissable « proprement ». La seule
  * réponse est de la traverser vite, et là où aucun bloc n'est en zone de
  * lecture : chaque palier tient sa couleur pleine sous son texte et ne
- * descend vers le suivant que dans son dernier quart.
+ * descend vers le suivant que dans son dernier septième.
  *
  * Personne ne perçoit que les deux courbes ne sont pas synchrones.
  * Tout le monde perçoit un texte illisible.
@@ -64,14 +64,16 @@ export function initPyramide({ tokens, seuils, reduit }) {
   };
 
   /* Les mêmes arrêts que la version CSS sans JavaScript : le palier reste
-     plein sous son bloc de texte, puis descend dans son dernier quart. */
+     plein sous son bloc de texte, puis descend à la toute fin. Ces valeurs
+     doivent rester identiques à celles de sections.css, sinon la page avec
+     et sans JavaScript ne raconte plus la même chose. */
   const arrets = [
     { el: paliers[0], de: T.tete,  vers: T.coeur, bascule: .78 },
     { el: paliers[1], de: T.coeur, vers: T.bas,   bascule: .86 },
     { el: paliers[2], de: T.bas,   vers: T.bas,   bascule: 1 }
   ];
 
-  /* Couleur du fond pour la position de lecture courante — le centre du
+  /* Couleur du fond pour la position de lecture courante, le centre du
      viewport, c'est-à-dire ce qu'il y a derrière le texte qu'on lit. */
   function couleurCourante() {
     const centre = innerHeight / 2;
@@ -95,7 +97,7 @@ export function initPyramide({ tokens, seuils, reduit }) {
     /* Le corps bascule au point d'égalité des deux couleurs : au-dessus
        --ecorce est la meilleure, en dessous --craie. Dans la bande morte
        aucune des deux n'atteint 4,5:1, mais on est toujours sur la moins
-       mauvaise — et aucun bloc n'y est en zone de lecture. */
+       mauvaise, et aucun bloc n'y est en zone de lecture. */
     const corps = L >= seuils.basculeCorps ? tokens.ecorce : tokens.craie;
 
     /* Les matières ont un seuil de plus que le corps : --seve-txt n'est
@@ -131,7 +133,7 @@ export function initPyramide({ tokens, seuils, reduit }) {
 
   /* Point d'entrée de vérification : permet d'auditer le contraste à chaque
      position de scroll sans dépendre de la boucle de rendu. Vite le retire
-     du build de production — il n'existe qu'en développement. */
+     du build de production, il n'existe qu'en développement. */
   if (import.meta.env.DEV) {
     window.__pyrTest = { peindre, couleurCourante, luminance };
   }
@@ -154,7 +156,7 @@ export function initPyramide({ tokens, seuils, reduit }) {
 
     /* On ne découpe que sur les espaces ordinaires. `\s` avalerait aussi
        l'espace insécable, et « pas : il » se retrouverait coupé en deux
-       mots — un deux-points pourrait alors ouvrir une ligne, ce que la
+       mots, un deux-points pourrait alors ouvrir une ligne, ce que la
        typographie française interdit. */
     const mots = p.textContent.replace(/[\n\r\t ]+/g, ' ').trim().split(' ');
     p.textContent = '';
@@ -182,7 +184,7 @@ export function initPyramide({ tokens, seuils, reduit }) {
 
 /* ------------------------------------------------- tracé des planches
    Chaque dessin se trace lui-même, une seule fois, à l'arrivée du palier.
-   C'est volontairement le geste le plus spectaculaire de la page — et
+   C'est volontairement le geste le plus spectaculaire de la page, et
    c'est pour ça qu'il ne se répète jamais et ne boucle pas. Un trait qui
    se redessine en permanence cesse d'être un geste et devient un décor.  */
 

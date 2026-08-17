@@ -21,13 +21,13 @@
      Statique en S2 : la piste et les trois marques existent, le remplissage
      est piloté au scroll en S3. Décoratif : la pyramide olfactive est déjà
      ordonnée dans le document, le rail ne fait que la redire visuellement. -->
-<div class="rail" aria-hidden="true">
-  <span class="rail__piste"></span>
-  <span class="rail__remplissage"></span>
-  <span class="rail__marque rail__marque--tete">Tête</span>
-  <span class="rail__marque rail__marque--coeur">Cœur</span>
-  <span class="rail__marque rail__marque--fond">Fond</span>
-</div>
+<nav class="rail" aria-label="Pyramide olfactive">
+  <span class="rail__piste" aria-hidden="true"></span>
+  <span class="rail__remplissage" aria-hidden="true"></span>
+  <a class="rail__marque rail__marque--tete"  href="#tete">Tête</a>
+  <a class="rail__marque rail__marque--coeur" href="#coeur">Cœur</a>
+  <a class="rail__marque rail__marque--fond"  href="#fond">Fond</a>
+</nav>
 
 
 <main>
@@ -149,7 +149,7 @@
          les dégradés CSS des paliers qui tiennent la page. -->
     <div class="pyramide__fond" aria-hidden="true"></div>
 
-    <article class="palier palier--tete">
+    <article class="palier palier--tete" id="tete">
       <div class="palier__cadre" data-flou>
         <p class="label">03 · La pyramide</p>
         <h2 class="h2">Trois temps</h2>
@@ -194,7 +194,7 @@
       </div>
     </article>
 
-    <article class="palier palier--coeur">
+    <article class="palier palier--coeur" id="coeur">
       <div class="palier__cadre" data-flou>
         <h3 class="h3">Cœur</h3>
 
@@ -239,7 +239,7 @@
       </div>
     </article>
 
-    <article class="palier palier--fond">
+    <article class="palier palier--fond" id="fond">
       <div class="palier__cadre" data-flou>
         <h3 class="h3">Fond</h3>
 

@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * SÈVE — main.js
+ * SÈVE, main.js
  * ----------------------------------------------------------------------------
  * Chef d'orchestre. Il lit les tokens, démarre le scroll, distribue aux
  * modules, et joue la signature en dernier.
@@ -8,8 +8,8 @@
  * C'est aussi le seul endroit qui connaît à la fois tokens.css et
  * signature.js : le module de signature est autonome par conception et ne
  * lit aucun token, donc c'est main.js qui les lui passe en paramètres.
- * Les deux règles — « aucun hexadécimal hors de tokens.css » et « le module
- * ne suppose l'existence de rien » — tiennent ensemble par ce seul point.
+ * Les deux règles : « aucun hexadécimal hors de tokens.css » et « le module
+ * ne suppose l'existence de rien », tiennent ensemble par ce seul point.
  * ============================================================================
  */
 
@@ -17,7 +17,7 @@ import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 
-import { playSignature } from './signature.js';
+import { playSignature, playWipe } from './signature.js';
 import { initPyramide, luminance, versRGB } from './pyramide.js';
 import { initFlacon } from './flacon.js';
 import { initVelocite } from './velocite.js';
@@ -124,6 +124,48 @@ function initRail() {
 
   ScrollTrigger.create({ start: 0, end: 'max', onUpdate: actualiser, onRefresh: actualiser });
   actualiser();
+
+  /* ------------------------------------------------- wipe de montage
+     Les trois tranches de la signature redeviennent trois bandes
+     diagonales : le même geste, mais au service de la navigation. C'est ce
+     qui transforme la signature d'un péage à l'entrée en outil narratif.
+
+     Le saut doit tomber pendant que l'écran est COUVERT, sinon on voit la
+     page changer et l'illusion de montage s'effondre. La fenêtre est
+     étroite : les trois bandes achèvent de couvrir à 0,55 s (0,45 de
+     course plus 0,10 de décalage) et repartent à 0,60. On vise 0,57.
+     Ces valeurs sont celles de la timeline du module, qu'on ne touche pas.
+
+     Sans JavaScript, les marques restent de simples ancres et sautent
+     nativement : la navigation ne dépend pas de l'animation.            */
+
+  const COUVERT = 0.57;
+  let enTransition = false;
+
+  const allerAu = (cible, hash) => {
+    if (!cible || enTransition) return;
+
+    const atterrir = () => {
+      lenis.scrollTo(cible, { immediate: true });
+      history.replaceState(null, '', hash);
+      ScrollTrigger.refresh();
+      enTransition = false;
+    };
+
+    if (REDUIT) { atterrir(); return; }
+
+    enTransition = true;
+    playWipe({ couleur: TOKENS.ecorce });
+    gsap.delayedCall(COUVERT, atterrir);
+  };
+
+  Object.entries(marques).forEach(([cle, marque]) => {
+    if (!marque) return;
+    marque.addEventListener('click', evt => {
+      evt.preventDefault();
+      allerAu(paliers[cle], marque.getAttribute('href'));
+    });
+  });
 }
 
 
@@ -225,7 +267,7 @@ initVelocite({ lenis, reduit: REDUIT });
 
 /* La page est déjà construite derrière : le HTML est statique, la signature
    ne fait que poser un calque par-dessus. Rien ne se compose après elle.  */
-/* oncePerSession: false — la signature rejoue à CHAQUE rechargement.
+/* oncePerSession: false, la signature rejoue à CHAQUE rechargement.
    Le brief demandait l'inverse (une fois par session) pour ne pas imposer
    un péage au visiteur qui revient. Décision du studio, assumée : en phase
    de démonstration on veut la revoir à chaque fois. Elle reste sautable au

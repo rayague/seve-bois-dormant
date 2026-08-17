@@ -1,8 +1,8 @@
 /* ══════════════════════════════════════════════════════════════════════════
-   SÈVE — base
+   SÈVE, base
    Polices, remise à zéro, échelle typographique, accessibilité.
    Aucune valeur hexadécimale, aucun espacement en dur : tout vient de
-   tokens.css. Aucune animation dans ce fichier — S2 est statique.
+   tokens.css. Aucune animation dans ce fichier : S2 est statique.
    ══════════════════════════════════════════════════════════════════════════ */
 
 
@@ -12,7 +12,7 @@
    Archivo porte tout ce qui est en capitales : display, h2, h3, labels,
    noms de matières, annotations, bouton, mentions.
    Newsreader ne porte que le corps de texte ; son italique ne compose que
-   le sous-titre du hero et « Bois Dormant » dans l'atelier — son jeu de
+   le sous-titre du hero et « Bois Dormant » dans l'atelier, son jeu de
    glyphes est réduit d'autant.                                             */
 
 @font-face{
@@ -132,7 +132,7 @@ body{
 }
 
 /* L'italique du sérif : sous-titre du hero, et nom du parfum une fois par
-   section au maximum. Pas d'italique synthétique — la fonte existe.       */
+   section au maximum. Pas d'italique synthétique, la fonte existe.       */
 em,.italique{ font-style:italic; font-weight:var(--p-corps); }
 
 
