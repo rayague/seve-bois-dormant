@@ -223,12 +223,16 @@ initVelocite({ lenis, reduit: REDUIT });
 
 /* La page est déjà construite derrière : le HTML est statique, la signature
    ne fait que poser un calque par-dessus. Rien ne se compose après elle.  */
+/* oncePerSession: false — la signature rejoue à CHAQUE rechargement.
+   Le brief demandait l'inverse (une fois par session) pour ne pas imposer
+   un péage au visiteur qui revient. Décision du studio, assumée : en phase
+   de démonstration on veut la revoir à chaque fois. Elle reste sautable au
+   premier scroll, clic, touche ou touchmove. */
 playSignature({
   chair: TOKENS.craie,
   peau:  TOKENS.resine,
   fond:  TOKENS.ecorce,
-  oncePerSession: true,
-  storageKey: 'seve-signature-vue'
+  oncePerSession: false
 }).then(() => {
   lenis.start();
   entreeHero();
