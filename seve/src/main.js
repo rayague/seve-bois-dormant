@@ -267,11 +267,11 @@ initVelocite({ lenis, reduit: REDUIT });
 
 /* La page est déjà construite derrière : le HTML est statique, la signature
    ne fait que poser un calque par-dessus. Rien ne se compose après elle.  */
-/* oncePerSession: false, la signature rejoue à CHAQUE rechargement.
-   Le brief demandait l'inverse (une fois par session) pour ne pas imposer
-   un péage au visiteur qui revient. Décision du studio, assumée : en phase
-   de démonstration on veut la revoir à chaque fois. Elle reste sautable au
-   premier scroll, clic, touche ou touchmove. */
+/* oncePerSession: true, réglage de production. La signature joue une fois par
+   session puis se contente d'un fondu court : un visiteur qui revient sur une
+   autre page ne doit pas repayer un péage de quatre secondes à chaque fois.
+   Elle reste sautable au premier scroll, clic, touche ou touchmove.
+   Pour la revoir en cours de revue : vider sessionStorage, ou fenêtre privée. */
 /* duration: 4 au lieu de 2. On passe par le paramètre exposé par le module,
    qui applique un timeScale global : les six plans, leurs proportions et
    leurs easings restent strictement intacts, tout se joue simplement deux
@@ -280,7 +280,8 @@ playSignature({
   chair: TOKENS.craie,
   peau:  TOKENS.resine,
   fond:  TOKENS.ecorce,
-  oncePerSession: false,
+  oncePerSession: true,
+  storageKey: 'seve-signature-vue',
   duration: 4
 }).then(() => {
   lenis.start();
