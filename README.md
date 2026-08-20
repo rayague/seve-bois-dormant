@@ -257,7 +257,9 @@ de texte tombait à 4,4998:1. Invisible à l'œil, faux au calcul.
   exigeait de réutiliser. L'arbitrage a été fait en faveur du wipe, en
   connaissance de cause : trois liens contextuels vers une séquence ordonnée
   ne sont pas un menu de navigation, mais la frontière est mince.
-- **Licence du code** à choisir. Seules les polices ont la leur.
+- **Licence écrite**, voir [LICENCE.md](LICENCE.md). Le code est sous
+  droit d'auteur exclusif, les polices sous OFL, et les données gardent la
+  licence de leur producteur.
 
 ## Crédits
 
