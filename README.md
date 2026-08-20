@@ -62,6 +62,12 @@ npm run dev --prefix seve
 
 Puis `npm run build --prefix seve` pour la version de production.
 
+
+**Revoir la signature.** Elle ne joue qu'une fois par session, pour ne pas
+devenir un péage à l'entrée. Pour la rejouer, ajouter `?signature` à l'URL :
+cela marche en local comme sur le site déployé, et ne coûte rien à un
+visiteur qui ne le connaît pas.
+
 ## Pile technique
 
 `Vite` · `HTML/CSS/JS vanilla` · `Lenis` · `GSAP + ScrollTrigger` · `SVG inline`
